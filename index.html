@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สมุดการบ้าน</title>
+<meta name="theme-color" content="#9B7FE0">
+<link rel="manifest" href="manifest.webmanifest">
+<script src="config.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Noto+Sans+Thai:wght@400;500;700&family=Mitr:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F6FC;--card:#fff;--ink:#16213E;--mute:#6E7B96;--line:#E5EAF5;--blue:#2F6BEB;--blue2:#4F46E5;--line-g:#06C755;--amber:#F5A800;--red:#E5484D;--green:#1F9D55}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 'Plus Jakarta Sans','Noto Sans Thai',sans-serif}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+aside{background:#fff;border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column;gap:14px;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;padding:0 6px}.logo{width:42px;height:42px;border-radius:12px;background:var(--blue);display:grid;place-items:center;font-size:22px}
+.brand b{font-size:19px;display:block;line-height:1.1}.brand small{color:var(--blue);font-size:12px}
+.me{display:flex;gap:10px;align-items:center;background:var(--tint,#EEF4FF);border:1px solid #D7E4FF;border-radius:16px;padding:12px;cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit}
+.av{width:40px;height:40px;border-radius:50%;background:#FFC83D;display:grid;place-items:center;font-weight:800;flex:none}
+.me b{font-size:14px;display:block}.me small{color:var(--mute);font-size:12px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nv{display:flex;align-items:center;gap:12px;border:0;background:none;padding:12px 14px;border-radius:12px;font:500 14px inherit;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.nv.on{background:var(--tint,#EAF1FF);color:var(--blue)}.nv .s{display:none}
+.bd{background:var(--red);color:#fff;border-radius:99px;font-size:12px;padding:1px 8px;font-weight:700}
+.gt{margin-top:auto;border-top:1px solid var(--line);padding-top:12px}.gt small{font-weight:700;color:var(--mute);letter-spacing:.04em;display:block;margin:0 6px 8px}
+.gt div{display:grid;grid-template-columns:1fr 1fr;gap:8px}.gt a{background:#F4F6FB;border-radius:10px;padding:8px 10px;color:var(--ink);text-decoration:none;font-size:13px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 28px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.pill-d{background:#F1F4FB;border-radius:99px;padding:8px 16px;font-weight:700;font-size:14px}
+.btn{border:0;border-radius:12px;padding:10px 16px;font:700 14px inherit;font-family:inherit;cursor:pointer;background:var(--blue);color:#fff}
+.btn.g{background:var(--line-g)}.btn.w{background:#fff;color:var(--blue)}.btn.gh{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.r{background:#fff;color:var(--red);border:1px solid #F3C5C7}
+.btn:focus-visible,.nv:focus-visible,.me:focus-visible,.pill:focus-visible{outline:3px solid #FFC83D;outline-offset:2px}
+main{padding:24px 28px 40px;max-width:1240px}
+.hero{background:linear-gradient(120deg,var(--blue),var(--blue2));color:#fff;border-radius:26px;padding:28px;position:relative;overflow:hidden}
+.hero:after{content:"🎓";position:absolute;right:28px;bottom:-10px;font-size:110px;opacity:.15}
+.tag{display:inline-block;background:rgba(255,255,255,.2);border-radius:99px;padding:3px 14px;font-size:12px;font-weight:700}
+.hero h1{font-size:32px;margin:12px 0 6px}.hero p{margin:0 0 18px;opacity:.95}.hero u{color:#FFD76A;font-weight:700}
+.hero .btn{margin-right:8px;margin-bottom:6px}.hero .btn.o{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.4)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}
+.st{background:#fff;border-radius:18px;padding:16px;display:flex;gap:14px;align-items:center}
+.st i{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-style:normal;font-size:22px}.st small{color:var(--mute);font-size:13px;display:block}.st b{font-size:28px;line-height:1.1}
+.cols{display:grid;grid-template-columns:1.7fr 1fr;gap:16px}
+.card{background:#fff;border-radius:20px;padding:20px}.card h3{margin:0 0 14px;font-size:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card h3 a{font-size:13px;color:var(--blue);cursor:pointer;font-weight:700}
+.item{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:none}
+.grow{flex:1;min-width:0;cursor:pointer}.grow b{display:block}.grow small{color:var(--mute)}.late{color:var(--red)!important;font-weight:700}
+.pill{border:0;border-radius:99px;padding:5px 14px;font:700 13px inherit;font-family:inherit;cursor:pointer;white-space:nowrap}
+.pill.open{background:#FFF3D1;color:#A66F00}.pill.doing{background:#E3EDFF;color:var(--blue)}.pill.done{background:#E1F6EA;color:var(--green)}
+.pb{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.cls{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+.cls b{font-size:14px;display:block}.cls small{color:var(--mute);font-size:12px}
+.seg{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.seg button.f{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 16px;font:500 14px inherit;font-family:inherit;cursor:pointer}.seg button.f.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.week{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}.week .card.today{outline:2px solid var(--blue)}
+.mini{border:0;background:var(--tint,#EAF1FF);color:var(--blue);border-radius:8px;width:28px;height:28px;font-size:18px;cursor:pointer}
+.bar{position:relative;height:8px;background:#E8EDF7;border-radius:99px;overflow:hidden;margin:6px 0}.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px}
+.pill.low{background:#FDE5E6;color:var(--red)}.cls .sc2{margin-left:auto;font-weight:700;white-space:nowrap}.need{font-size:13px;background:#F3F6FC;border-radius:12px;padding:8px 12px;margin:8px 0}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.dh{text-align:center;font-weight:700;color:var(--mute);font-size:12px}
+.cd{min-height:60px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px;cursor:pointer;font-size:12px}.cd.tdy{outline:2px solid var(--blue)}.cd.sel{background:var(--tint,#EAF1FF)}.cd i{display:inline-block;width:8px;height:8px;border-radius:50%;margin:2px 2px 0 0}
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}.sc{border-top:6px solid var(--c);cursor:pointer}.sc p{margin:4px 0;color:var(--mute);font-size:14px}
+.empty{text-align:center;color:var(--mute);padding:20px 6px}
+dialog{border:0;border-radius:22px;padding:22px;width:min(440px,92vw);color:var(--ink);font-family:inherit}dialog::backdrop{background:rgba(22,33,62,.5)}
+dialog h3{margin:0 0 6px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 4px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font:15px inherit;font-family:inherit;background:#fff;color:var(--ink)}
+input[type=color]{padding:2px;height:42px}.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.hint{font-size:13px;color:var(--mute);margin:4px 0}.hint a{color:var(--blue)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20;max-width:90vw}#toast.on{opacity:1}
+@media(max-width:900px){
+ .app{display:block}aside{position:static;height:auto;padding:10px 12px;border:0}
+ .brand,.gt{display:none}.me{padding:8px}
+ .nav{position:fixed;bottom:0;left:0;right:0;flex-direction:row;background:#fff;border-top:1px solid var(--line);padding:6px;z-index:10;justify-content:flex-start;overflow-x:auto}
+ .nv{flex:none;min-width:62px;flex-direction:column;gap:0;padding:6px 4px;font-size:11px;position:relative;align-items:center}.nv .l{display:none}.nv .s{display:block}.nv .bd{position:absolute;top:0;right:4px;font-size:10px;padding:0 6px}
+ .top{padding:10px 14px}main{padding:14px 14px 90px}.stats{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}.hero h1{font-size:24px}}
+.sw{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;padding:0;min-height:0}.sw.on{border-color:var(--ink)}
+body.dark{--bg:#0F1626;--ink:#E7ECF7;--mute:#9AA6C2;--line:#2A3552;background:#0F1626;color:#E7ECF7}
+body.dark aside,body.dark .top,body.dark nav,body.dark .card,body.dark .st,body.dark dialog,body.dark .cd,body.dark .btn.gh,body.dark .seg button.f,body.dark input,body.dark select,body.dark textarea{background:#18223A!important;color:#E7ECF7!important;border-color:#2A3552!important}
+body.dark .pill-d,body.dark .gt a,body.dark .need,body.dark .bar{background:#222E4A!important}
+body.dark .cd.sel{background:var(--tint)!important}
+body.dark [style*="#FFF8E6"],body.dark [style*="#FFF3D1"]{background:#3A3220!important}
+body.dark .hint,body.dark .empty,body.dark small,body.dark .gt a,body.dark .nv{color:#B6C0D8!important}body.dark .nv.on{color:#fff!important}
+/* ===== สไตล์ Clay (ดินน้ำมัน) ===== */
+body.clay{--bg:#FFF3E0;--ink:#5A3825;--mute:#8A6F62;--line:#F1DFC6;background:radial-gradient(circle at 8% 0,#FFE3EE 0,transparent 32%),radial-gradient(circle at 100% 15%,#E9DEFF 0,transparent 30%),#FFF3E0}
+body.clay h1,body.clay h2,body.clay h3,body.clay .brand b{font-family:Mitr,'Noto Sans Thai',sans-serif;font-weight:600}
+body.clay aside,body.clay .top,body.clay nav{background:#FFF8EC;border:0}
+body.clay .card,body.clay .st,body.clay dialog{background:#FFF8EC;border-radius:28px;box-shadow:8px 10px 22px rgba(176,132,84,.22),-6px -6px 16px rgba(255,255,255,.95),inset 2px 2px 6px rgba(255,255,255,.9),inset -3px -4px 8px rgba(214,178,140,.16)}
+body.clay .item,body.clay .cls,body.clay .cd{background:#FFFDF8;border:0;border-radius:20px;box-shadow:4px 5px 12px rgba(176,132,84,.18),-3px -3px 8px #fff}
+body.clay .btn{border-radius:99px;background:var(--blue);color:#fff;box-shadow:0 8px 14px rgba(90,56,37,.22),inset 0 3px 5px rgba(255,255,255,.45),inset 0 -4px 6px rgba(0,0,0,.12)}
+body.clay .btn.gh,body.clay .btn.w,body.clay .btn.r{background:#FFF8EC;color:var(--ink);border:0}body.clay .btn.g{background:#06C755;color:#fff}
+body.clay .pill{box-shadow:inset 1px 1px 3px rgba(255,255,255,.8),2px 3px 6px rgba(90,56,37,.15)}
+body.clay .st i,body.clay .ic,body.clay .pb{border-radius:18px;box-shadow:inset 2px 2px 5px rgba(255,255,255,.8),inset -3px -3px 6px rgba(0,0,0,.08),3px 4px 8px rgba(90,56,37,.14)}
+body.clay .nv.on{background:var(--tint);box-shadow:inset 2px 2px 5px rgba(255,255,255,.9),3px 4px 9px rgba(120,80,200,.18)}
+body.clay .me{border:0;border-radius:22px;box-shadow:4px 5px 12px rgba(176,132,84,.2),-3px -3px 8px #fff}
+body.clay .hero{background:linear-gradient(135deg,#F1E6FF,#FFE3EE);color:var(--ink);border-radius:32px;box-shadow:8px 10px 22px rgba(176,132,84,.22),-6px -6px 16px rgba(255,255,255,.95),inset 2px 2px 6px rgba(255,255,255,.9)}
+body.clay .hero:after{content:"🧸";opacity:.95;font-size:96px;right:250px;bottom:8px}
+body.clay .hero h1{font-size:34px;color:var(--ink)}body.clay .hero u{color:#E8467C}body.clay .hero h1,body.clay .hero p{max-width:60%}
+body.clay .tag{background:#fff;color:var(--blue)}body.clay .hero .btn.o{background:#FFF8EC;color:var(--ink);border:0}
+body.clay input,body.clay select,body.clay textarea{border:0;border-radius:16px;background:#FFF9EF;box-shadow:inset 3px 3px 7px rgba(176,132,84,.2),inset -3px -3px 7px #fff}
+body.clay .bar{background:#F1E4D0;box-shadow:inset 1px 2px 3px rgba(0,0,0,.1)}
+body.dark.clay{background:#0F1626}body.dark.clay .hero{background:linear-gradient(135deg,#2A2347,#3A2540);color:#E7ECF7}body.dark.clay .hero h1,body.dark.clay .hero p{color:#E7ECF7}
+/* ===== ธีมทุ่งหญ้า (Growth) ===== */
+body.meadow{--bg:#DFF3FF;--ink:#2F4A2A;--mute:#6C8A62;--line:#D5E8C8;background:linear-gradient(180deg,#BFE6F8 0,#DDF2FF 38%,#E8F8D8 70%,#CDEBA8 100%) fixed}
+body.meadow:after{content:"";position:fixed;left:0;right:0;bottom:0;height:120px;background:radial-gradient(ellipse at 14% 100%,#A8DB6E 0 52%,transparent 53%),radial-gradient(ellipse at 58% 112%,#8FCF57 0 50%,transparent 51%),radial-gradient(ellipse at 100% 100%,#BDE57E 0 46%,transparent 47%);pointer-events:none;z-index:-1}
+body.dark.meadow:after{opacity:.2}
+body.meadow aside,body.meadow .top,body.meadow nav{background:rgba(255,255,255,.74);backdrop-filter:blur(6px)}
+body.meadow .card,body.meadow .st,body.meadow dialog{background:#FFFEF4;box-shadow:8px 10px 22px rgba(80,140,50,.2),-6px -6px 16px rgba(255,255,255,.95),inset 2px 2px 6px rgba(255,255,255,.9),inset -3px -4px 8px rgba(150,200,110,.18)}
+body.meadow .item,body.meadow .cls,body.meadow .cd{background:#FFFFF8;box-shadow:4px 5px 12px rgba(80,140,50,.16),-3px -3px 8px #fff}
+body.meadow h1,body.meadow h2,body.meadow h3,body.meadow .hero h1{color:#2F5A22}
+body.meadow .btn.gh,body.meadow .btn.w,body.meadow .btn.r{background:#FFFEF4;color:#2F4A2A}
+body.meadow .hero{background:linear-gradient(180deg,#A9DDF5 0,#D6F0FF 52%,#CDEFA6 100%);color:#2F4A2A}
+body.meadow .hero:before{content:"";position:absolute;left:48%;top:20px;width:70px;height:26px;background:#fff;border-radius:99px;box-shadow:26px -12px 0 6px #fff,52px 0 0 -2px #fff;opacity:.9}
+body.meadow .hero:after{content:"🌱"}
+body.meadow .tag{color:#3C8A22}
+body.meadow .mini-cal{background:#FFFEF4}
+body.meadow .caught{background:#DDF5C8!important}
+body.meadow .bar{background:#E3F0D2}
+@media(max-width:700px){body.meadow .hero:before{left:60%}}
+.clayonly{display:none}body.clay .clayonly{display:block}
+.mini-cal{position:absolute;right:26px;top:22px;width:210px;background:#FFF8EC;border-radius:22px;box-shadow:5px 7px 16px rgba(176,132,84,.25),-4px -4px 10px #fff;overflow:hidden;z-index:1;color:#5A3825}
+.mini-cal .mch{background:#F0508E;color:#fff;text-align:center;font-weight:700;padding:8px}.mcg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:8px;font-size:11px;text-align:center}.mcg i{font-style:normal;padding:3px 0}.mcg i.td{background:#F0508E;color:#fff;border-radius:50%}
+.caught{background:#DDF5E4!important}body.clay .pinkc{background:#FFE3EE!important}
+@media(max-width:700px){body.clay .hero h1,body.clay .hero p{max-width:100%}.mini-cal{display:none!important}body.clay .hero:after{font-size:64px;right:20px}}
+.cal{gap:6px}.dh{border-radius:12px;padding:6px 0;color:#5A3825;font-size:13px}
+.cd{min-height:86px;border-radius:14px;padding:6px;overflow:hidden;transition:transform .12s}.cd:hover{transform:translateY(-2px)}
+.cd b{font-size:13px;display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:50%}
+.cd.we{background:#FFF6FA}.cd.hol{background:#FFF0F0}.cd.hol b{color:#E5484D}.cd.tdy{outline:2px solid #F0508E;outline-offset:-2px}.cd.tdy b{background:#F0508E;color:#fff}
+.cd.sel{box-shadow:inset 0 0 0 3px var(--blue)}body.clay .cd.sel{background:var(--tint);box-shadow:inset 0 0 0 3px var(--blue),4px 5px 12px rgba(176,132,84,.18)}
+.chs{display:flex;flex-direction:column;gap:3px;margin-top:4px}.ch{display:block;border-radius:8px;padding:1px 6px;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ch em{font-style:normal}.more{font-size:11px;color:var(--mute);font-weight:700}
+@media(max-width:700px){.cal{gap:3px}.cd{min-height:58px;padding:3px}.chs{flex-direction:row;flex-wrap:wrap;gap:2px}.ch{padding:0 3px;font-size:12px}.ch em{display:none}.dh{font-size:11px;padding:4px 0}.cd b{min-width:20px;height:20px;font-size:11px}}
+dialog{max-height:90vh;overflow:auto}input,select,textarea{font-size:16px}.btn,.pill{min-height:36px}
+@media(max-width:600px){.top{gap:6px}.top .btn{font-size:13px;padding:8px 12px}.hero{padding:20px}.hero h1{font-size:22px}.item{padding:12px;gap:10px}.pill{font-size:12px;padding:5px 10px}.cd{min-height:48px;padding:2px}.card{padding:16px}.nav{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="demobar" style="display:none;background:#FFF3D1;color:#6b4d00;text-align:center;padding:8px 12px;font-size:13px">🧪 โหมดทดลอง: ข้อมูลสมมติ ไม่ถูกบันทึกและไม่ส่ง LINE <button class="btn" data-act="demoOff" style="min-height:30px;padding:4px 12px;font-size:12px">เชื่อมต่อของจริง</button></div>
+<div class="app">
+<aside>
+  <div class="brand"><div class="logo">🎓</div><div><b>สมุดการบ้าน</b><small>ตารางเรียนและการบ้านลูก</small></div></div>
+  <button class="me" data-act="profile" id="me"></button>
+  <div class="nav" id="nav"></div>
+  <div class="gt"><small>GOOGLE TOOLS</small><div>
+    <a href="https://classroom.google.com" target="_blank" rel="noopener">🏫 Classroom</a><a href="https://meet.google.com" target="_blank" rel="noopener">📹 Meet</a>
+    <a href="https://drive.google.com" target="_blank" rel="noopener">📁 Drive</a><a href="https://calendar.google.com" target="_blank" rel="noopener">📅 Calendar</a></div></div>
+</aside>
+<div>
+  <div class="top"><span class="pill-d" id="today"></span><span><button class="btn" data-act="add" data-t="Homework">+ เพิ่มการบ้านใหม่</button> <button class="btn gh" data-act="theme" aria-label="ธีมและการแสดงผล">🎨</button> <button class="btn g" data-act="test">💬 ทดสอบส่ง LINE</button></span></div>
+  <main id="main"><div class="empty">กำลังโหลด…</div></main>
+</div>
+</div>
+<div id="setup" style="display:none;position:fixed;inset:0;z-index:50;background:rgba(22,33,62,.6);align-items:center;justify-content:center;padding:16px"><div class="card" style="max-width:440px;width:100%;margin:0"><h3>🔗 เชื่อมต่อสมุดการบ้าน</h3><p class="hint">วางลิงก์เว็บแอป (ลงท้ายด้วย /exec) ที่ได้จากชีตของคุณ แล้วกด “เข้าสู่ระบบด้วย Google” ใช้บัญชีที่เจ้าของอนุญาตไว้ หรือจะใช้ลิงก์ที่มี ?k=รหัส กับปุ่ม “เชื่อมต่อด้วยรหัสลับ” ก็ได้</p><input id="cfgurl" placeholder="https://script.google.com/macros/s/…/exec?k=…" autocomplete="off"><div id="gbtn" style="margin:10px 0;min-height:44px"></div><p class="msg late" style="margin:8px 0 0"></p><div class="acts"><button class="btn gh" data-act="demoOn">🧪 ทดลองใช้ (ข้อมูลตัวอย่าง)</button><button class="btn" data-act="cfgSave">เชื่อมต่อด้วยรหัสลับ</button></div></div></div>
+<dialog id="dlg"></dialog><div id="toast"></div>
+<script>
+let CFG=null,DEMO=false;try{CFG=JSON.parse(localStorage.getItem('sb_cfg')||'null');DEMO=!CFG&&localStorage.getItem('sb_demo')=='1'}catch(e){}
+const D0=new Date();D0.setHours(0,0,0,0);
+const off=n=>{const d=new Date(D0);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const SUBS=[['m','คณิตศาสตร์','ครูนิดา','#EF4444'],['s','วิทยาศาสตร์','ครูสมชาย','#2F6BEB'],['t','ภาษาไทย','ครูวิภา','#EC4899'],['e','ภาษาอังกฤษ','ครูประเสริฐ','#22C55E'],['h','สังคมศึกษา','ครูมาลี','#A855F7'],['p','สุขศึกษาและพลศึกษา','ครูกิตติ','#84CC16']];
+const SL=[['08:20','09:10'],['09:10','10:00'],['10:00','10:50'],['10:50','11:40'],['13:20','14:10'],['14:10','15:00']];
+const DB={theme:{c:'#4FA52E',mode:'light',size:'m',style:'meadow'},line:true,hour:'18',weekly:false,period:{on:false,off:[],init:true},
+ student:{name:'น้องตัวอย่าง',nick:'ตัวอย่าง',grade:'ม.2/1',no:'12',term:'เทอม 1 / ปีการศึกษา 2569',weeks:'18'},credits:{m:'1.5',s:'1.5'},doneDays:[off(0),off(-1),off(-2)],
+ Subjects:SUBS.map(x=>({id:x[0],name:x[1],teacher:x[2],room:'201',color:x[3],note:''})),
+ Schedule:[],Homework:[
+  {id:'h1',subjectId:'m',title:'ใบงานที่ 5 สมการเชิงเส้น',detail:'โจทย์ใน https://classroom.google.com',due:off(1),status:'doing'},
+  {id:'h2',subjectId:'s',title:'รายงานทดลองการเคลื่อนที่',detail:'',due:off(3),status:'open'},
+  {id:'h3',subjectId:'t',title:'สรุปวรรณคดีไทย',detail:'',due:off(-1),status:'open'},
+  {id:'h4',subjectId:'e',title:'Vocabulary Unit 4',detail:'',due:off(6),status:'open'},
+  {id:'h5',subjectId:'h',title:'แบบฝึกหัดบทที่ 3',detail:'',due:off(2),status:'done'},
+  {id:'h6',subjectId:'E:x1',title:'โจทย์ติวเลขชุดที่ 2',detail:'',due:off(4),status:'open'}],
+ Extra:[{id:'x1',name:'ติวคณิต ม.4',teacher:'พี่ต้น',place:'สถาบัน A',day:'6',start:'09:00',end:'11:00',color:'#F59E0B',note:''},{id:'x2',name:'ติวภาษาอังกฤษ',teacher:'ครูแอน',place:'ออนไลน์',day:'3',start:'18:00',end:'19:30',color:'#14B8A6',note:''}],
+ Scores:[['m','คะแนนเก็บ',50,40],['m','สอบกลางภาค',20,15],['m','สอบปลายภาค',30,''],['s','คะแนนเก็บ',50,38],['s','สอบกลางภาค',20,12],['s','สอบปลายภาค',30,''],['t','คะแนนเก็บ',50,45]].map((r,i)=>({id:'c'+i,subjectId:r[0],name:r[1],kind:r[1].startsWith('สอบ')?r[1]:'คะแนนเก็บ',full:String(r[2]),score:String(r[3])})),
+ Exams:[{id:'e1',subjectId:'s',kind:'สอบกลางภาค',date:off(12),start:'09:00',room:'201',topics:'บทที่ 1-3'},{id:'e2',subjectId:'m',kind:'สอบกลางภาค',date:off(13),start:'09:00',room:'201',topics:'สมการและอสมการ'},{id:'e3',subjectId:'e',kind:'ควิซ',date:off(5),start:'10:00',room:'',topics:'Unit 4'}],
+ Packs:[{id:'k1',subjectId:'m',text:'เครื่องคิดเลข'},{id:'k2',subjectId:'m',text:'ไม้บรรทัด'},{id:'k3',subjectId:'p',text:'ชุดพละ'}],
+ Events:[{id:'v4',title:'วันหยุดชดเชย',kind:'วันหยุด',date:off(11),note:''},{id:'v1',title:'ค่าเทอมงวดที่ 2',kind:'ค่าเทอม/ค่าใช้จ่าย',date:off(7),note:''},{id:'v2',title:'กีฬาสี',kind:'กิจกรรมโรงเรียน',date:off(9),note:''},{id:'v3',title:'ประชุมผู้ปกครอง',kind:'ประชุมผู้ปกครอง',date:off(15),note:''}],
+ Attend:[{id:'a1',subjectId:'m',date:off(-8),status:'ขาด'},{id:'a2',subjectId:'m',date:off(-3),status:'ลา'},{id:'a3',subjectId:'s',date:off(-5),status:'สาย'}],
+ Projects:[{id:'p1',subjectId:'s',title:'โครงงานวิทยาศาสตร์',due:off(20),members:'ตัวอย่าง, เพื่อน A, เพื่อน B',steps:'✓ เลือกหัวข้อ\n✓ ค้นคว้าข้อมูล\nทำการทดลอง @'+off(5)+'\nเขียนรายงาน'}],
+ Activities:[{id:'g1',name:'ชุมนุมหุ่นยนต์',kind:'ชุมนุม',done:'6',need:'20',status:'กำลังทำ'},{id:'g2',name:'จิตอาสา',kind:'จิตอาสา',done:'10',need:'10',status:'ผ่านแล้ว'}],
+ Links:[{id:'l1',subjectId:'m',title:'Google Classroom คณิต',url:'classroom.google.com'}],
+ Contacts:[{id:'n1',name:'ครูวิภา',role:'ครูที่ปรึกษา',phone:'081-234-5678',email:'',line:''}],
+ Study:[{id:'y1',subjectId:'s',date:off(9),topic:'ทบทวนบทที่ 1-2',minutes:'60',done:'ยังไม่อ่าน'},{id:'y2',subjectId:'m',date:off(10),topic:'ทำโจทย์สมการ',minutes:'45',done:'อ่านแล้ว'}],
+ Mistakes:[{id:'x9',subjectId:'m',date:off(-4),question:'ข้อ 7 ในใบงาน แก้สมการผิดเครื่องหมาย',reason:'ไม่ระวัง',fix:'ย้ายข้างต้องเปลี่ยนเครื่องหมาย',reviewed:'ยังไม่ทบทวน'}],
+ Terms:[{id:'t1',term:'2/2568',gpa:'3.5',credits:'20'}]};
+for(let d=1;d<=7;d++)SL.forEach((t,i)=>{if(d<=5||i<2)DB.Schedule.push({id:'s'+d+i,day:String(d),start:t[0],end:t[1],subjectId:SUBS[(i+d)%6][0]})});
+const api={getAll:()=>JSON.parse(JSON.stringify(DB)),save:(n,o)=>{if(!o.id)o.id='n'+Math.random().toString(36).slice(2,8);const l=DB[n],i=l.findIndex(x=>x.id==o.id);i<0?l.push(o):l[i]=o;return o},remove:(n,id)=>{DB[n]=DB[n].filter(x=>x.id!=id);return true},enableBot:()=>({url:'https://script.google.com/macros/s/EXAMPLE/exec?k=EXAMPLE'}),botInfo:()=>({url:'https://script.google.com/macros/s/EXAMPLE/exec?k=EXAMPLE'}),disableBot:()=>true,testLine:()=>'400 โหมดทดลอง ไม่ได้ส่ง LINE จริง'};
+const demoRun=(fn,a)=>new Promise(ok=>setTimeout(()=>ok(api[fn]?api[fn](...a):true),60));
+const run=async(fn,...args)=>{
+  if(DEMO)return demoRun(fn,args);
+  if(!CFG)throw new Error('ยังไม่ได้เชื่อมต่อ');
+  let r;
+  try{r=await fetch(CFG.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({k:CFG.k,s:CFG.s,fn,args}),redirect:'follow'})}
+  catch(e){if(fn=='getAll'){let s=null;try{s=localStorage.getItem('sb_snap')}catch(x){}if(s){setTimeout(()=>toast('ออฟไลน์ — แสดงข้อมูลล่าสุดที่เก็บไว้ (แก้ไขไม่ได้)'),400);return JSON.parse(s)}}throw new Error('เชื่อมต่อไม่ได้ ตรวจอินเทอร์เน็ต')}
+  let j;try{j=await r.json()}catch(e){throw new Error('ตอบกลับไม่ถูกต้อง (ตรวจว่าตั้งเว็บแอปเป็น “ทุกคน” และสร้างเวอร์ชันใหม่แล้ว)')}
+  if(!j.ok)throw new Error(j.error||'ผิดพลาด');
+  if(fn=='getAll'){try{localStorage.setItem('sb_snap',JSON.stringify(j.data))}catch(e){}}
+  return j.data;
+};
+const DAYS=['','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์'];
+const ST={open:'รอดำเนินการ',doing:'กำลังทำอยู่',done:'ส่งแล้ว'},NEXT={open:'doing',doing:'done',done:'open'};
+const $=s=>document.querySelector(s);
+const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const t0=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const left=s=>Math.round((new Date(s+'T00:00:00')-t0())/864e5);
+const dow=()=>new Date().getDay()||7;
+const sub=id=>{if(String(id).startsWith('E:')){const x=S.Extra.find(e=>'E:'+e.id==id);return x?{name:'⭐ '+x.name,color:x.color,teacher:x.teacher,room:x.place,extra:1}:{name:'ไม่ระบุวิชา',color:'#8892A6',teacher:'',room:''}}return S.Subjects.find(s=>s.id==id)||{name:'ไม่ระบุวิชา',color:'#8892A6',teacher:'',room:''}};
+const byTime=(a,b)=>a.start>b.start?1:-1,byDue=(a,b)=>a.due>b.due?1:a.due<b.due?-1:0;
+const fd=s=>s?new Date(s+'T00:00:00').toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'}):'';
+const stOf=h=>h.status||'open',isLate=h=>stOf(h)!='done'&&h.due&&left(h.due)<0;
+const GR=[[80,4],[75,3.5],[70,3],[65,2.5],[60,2],[55,1.5],[50,1],[0,0]];
+const KINDS=['คะแนนเก็บ','สอบกลางภาค','สอบปลายภาค','อื่นๆ'];
+const grade=p=>GR.find(g=>p>=g[0])[1],fmt=n=>Math.round(n*100)/100;
+const gc=g=>g>=3?'done':g>=2?'doing':g>=1?'open':'low';
+let target=4,hk='all';
+const pts=x=>{const f=+x.full||0,m=+x.max||f;return m?(+x.score)/m*f:0};
+function calc(sid){
+  const num=v=>v===''||v==null||isNaN(+v)?null:+v,it=S.Scores.filter(x=>x.subjectId==sid);
+  const full=it.reduce((a,x)=>a+(num(x.full)||0),0),done=it.filter(x=>num(x.score)!=null);
+  const earned=done.reduce((a,x)=>a+pts(x),0),doneFull=done.reduce((a,x)=>a+(num(x.full)||0),0);
+  return {it,full,earned,doneFull,left:full-doneFull,pct:doneFull?earned/doneFull*100:null,min:full?earned/full*100:null};
+}
+const cwt=id=>{const v=(S.credits||{})[id];return v===undefined||v===''?1:+v};
+function needText(c){
+  if(!c.full)return '';
+  const need=GR.find(g=>g[1]==target)[0]*c.full/100-c.earned;
+  if(need<=0)return `✅ ถึงเกณฑ์เกรด ${target} แล้ว`;
+  if(need>c.left+1e-9)return `⚠️ เกรด ${target} ต้องได้อีก ${fmt(need)} คะแนน แต่เหลือให้เก็บเพียง ${fmt(c.left)} (เป็นไปไม่ได้แล้ว)`;
+  return `🎯 เกรด ${target}: ต้องได้อีก ${fmt(need)} จาก ${fmt(c.left)} คะแนนที่เหลือ (เฉลี่ย ${fmt(need/c.left*100)}%)`;
+}
+const bar=(c,col)=>`<div class="bar"><i style="width:${c.full?Math.min(100,c.doneFull/c.full*100):0}%;background:${col}33"></i><i style="width:${c.full?Math.min(100,c.earned/c.full*100):0}%;background:${col}"></i></div>`;
+let S={Subjects:[],Schedule:[],Homework:[],Extra:[],Scores:[],Exams:[],Packs:[],Events:[],Attend:[],Projects:[],Activities:[],Links:[],Contacts:[],Study:[],Mistakes:[],Terms:[],credits:{},doneDays:[],student:{},line:false,hour:'18'},view='dash',filter='all';
+const NAV=[['dash','📊','แดชบอร์ดภาพรวม','ภาพรวม'],['hw','📋','การบ้านและงาน','การบ้าน'],['sch','🗓️','ตารางเรียนประจำสัปดาห์','ตาราง'],['extra','⭐','ตารางเรียนพิเศษ','พิเศษ'],['score','📈','คะแนนและผลการเรียน','คะแนน'],['exam','📆','ตารางสอบ','สอบ'],['cal','🗓️','ปฏิทินรวม','ปฏิทิน'],['att','🙋','เวลาเรียน','เวลาเรียน'],['pa','🧩','โครงงานและกิจกรรม','โครงงาน'],['study','🧠','ติวสอบและสมุดข้อผิดพลาด','ติวสอบ'],['ref','☎️','ลิงก์และผู้ติดต่อ','ติดต่อ'],['subj','📘','รายวิชาและครูผู้สอน','วิชา'],['line','💬','ตั้งค่า LINE แจ้งเตือน','LINE']];
+function toast(m){const t=$('#toast');t.textContent=m;t.className='on';setTimeout(()=>t.className='',2600)}
+const nick=()=>S.student.nick||S.student.name||'ลูก';
+function hwItem(h){
+  const s=sub(h.subjectId),st=stOf(h),n=h.due?left(h.due):0,late=isLate(h);
+  return `<div class="item"><div class="ic" style="background:${s.color}22;color:${s.color}">${s.extra?'⭐':'📝'}</div>
+  <div class="grow" data-act="edit" data-t="Homework" data-id="${h.id}"><b>${esc(h.title)}</b>${h.detail?`<small style="display:block">📎 ${link(esc(h.detail))}</small>`:''}<small><span style="color:${s.color};font-weight:700">${esc(s.name)}</span> • กำหนดส่ง: <span class="${late?'late':''}">${esc(fd(h.due)||'-')}${late?` (เลย ${-n} วัน)`:''}</span></small></div>
+  <button class="pill ${st}" data-act="cycle" data-id="${h.id}" title="กดเพื่อเปลี่ยนสถานะ">${st=='done'?'✓ ':''}${ST[st]}</button></div>`;
+}
+function clsRow(x,i){const s=sub(x.subjectId);return `<div class="cls" data-act="edit" data-t="Schedule" data-id="${x.id}"><div class="pb" style="background:${s.color}22;color:${s.color}">P${i+1}</div><div><b>${esc(s.name)}</b><small>${x.start} - ${x.end}${s.room?' • ห้อง '+esc(s.room):''}</small></div></div>`}
+function exRow(x,lbl){return `<div class="cls" data-act="edit" data-t="Extra" data-id="${x.id}"><div class="pb" style="background:${x.color}22;color:${x.color}">⭐</div><div><b>${esc(x.name)}</b><small>${lbl?lbl+' • ':''}${x.start} - ${x.end}${x.teacher?' • '+esc(x.teacher):''}${x.place?' • '+esc(x.place):''}</small></div></div>`}
+function extra(){
+  return `<div class="week">${[1,2,3,4,5,6,7].map(d=>{const l=S.Extra.filter(x=>x.day==d).sort(byTime);return `<div class="card ${d==dow()?'today':''}"><h3>${DAYS[d]} <button class="mini" data-act="add" data-t="Extra" data-day="${d}" aria-label="เพิ่มเรียนพิเศษวัน${DAYS[d]}">+</button></h3>${l.length?l.map(x=>exRow(x)).join(''):'<div class="empty">ไม่มีคาบ</div>'}</div>`}).join('')}</div>`;
+}
+function scoreView(){
+  const cards=S.Subjects.map(s=>{
+    const c=calc(s.id),g=c.pct==null?null:grade(c.pct);
+    return `<div class="card" style="border-top:6px solid ${s.color}"><h3>${esc(s.name)} ${g!=null?`<span class="pill ${gc(g)}">เกรดโดยประมาณ ${g}</span>`:''}</h3>
+    ${c.it.length?`${bar(c,s.color)}<p class="hint">ได้ <b>${fmt(c.earned)}</b> จาก ${fmt(c.doneFull)} คะแนนที่ประเมินแล้ว${c.pct!=null?` (${fmt(c.pct)}%)`:''} • คะแนนเต็มรวม ${fmt(c.full)}</p><div class="need">${needText(c)}</div>${c.it.map(x=>`<div class="cls" data-act="edit" data-t="Scores" data-id="${x.id}"><div><b>${esc(x.name)}</b><small>${esc(x.kind)}</small></div><span class="sc2">${x.score===''?'—':esc(x.score)}/${esc(x.max||x.full)}${+x.max&&+x.max!=+x.full&&x.score!==''?` → ${fmt(pts(x))}/${esc(x.full)}`:''}</span></div>`).join('')}`
+    :`<div class="empty">ยังไม่มีรายการคะแนน<br><button class="btn" style="margin-top:10px" data-act="preset" data-sid="${s.id}">ใส่เกณฑ์มาตรฐานให้ (เก็บ 50 + กลางภาค 20 + ปลายภาค 30)</button><p class="hint">แต่ละโรงเรียนใช้สัดส่วนไม่เท่ากัน แก้ตัวเลขให้ตรงกับเกณฑ์ของวิชาได้</p></div>`}
+    <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px">หน่วยกิตวิชานี้ <input type="number" step="0.5" min="0" class="cr" data-sid="${s.id}" value="${esc((S.credits||{})[s.id]??'')}" style="width:80px"></label><div class="acts" style="margin-top:8px"><button class="btn gh" data-act="add" data-t="Scores" data-sid="${s.id}">+ เพิ่มรายการ</button></div></div>`}).join('');
+  return `<div class="seg"><label style="margin:0" for="tg">เป้าหมายเกรด</label><select id="tg" style="width:auto">${GR.map(g=>`<option value="${g[1]}" ${g[1]==target?'selected':''}>${g[1]}</option>`).join('')}</select></div>
+  <p class="hint">กรอก “คะแนนเต็ม” ของแต่ละรายการให้รวมเป็น 100 (หรือตามเกณฑ์วิชา) แล้วกรอก “คะแนนที่ได้” เมื่อประกาศผล รายการที่ยังไม่ออกคะแนนให้เว้นว่างไว้</p>
+  <div class="sg">${cards||'<div class="card empty">เพิ่มวิชาก่อนที่เมนู “รายวิชาและครูผู้สอน”</div>'}</div>${termsCard()}`;
+}
+function dashScores(){
+  const rows=S.Subjects.map(s=>({s,c:calc(s.id)})).filter(x=>x.c.it.length);
+  const gr=rows.filter(x=>x.c.pct!=null),cw=x=>cwt(x.s.id),cs=gr.reduce((a,x)=>a+cw(x),0),avg=cs?fmt(gr.reduce((a,x)=>a+grade(x.c.pct)*cw(x),0)/cs):null,mn=cs?fmt(gr.reduce((a,x)=>a+grade(x.c.min)*cw(x),0)/cs):null;
+  return `<div class="card" style="margin-top:16px"><h3>📈 สรุปผลการเรียน (คะแนนเก็บ / กลางภาค / ปลายภาค) <a data-act="view" data-id="score">ใส่/ดูคะแนน</a></h3>${rows.length?`${avg!=null?`<p class="hint">เกรดเฉลี่ยโดยประมาณ (ถ่วงตามหน่วยกิตที่ตั้งไว้ ถ้าไม่ตั้งนับเป็น 1 หน่วยกิต 0 = ไม่นับ): <b>${avg}</b> • ถ้าคะแนนที่เหลือได้ 0: <b>${mn}</b></p>`:''}${rows.map(({s,c})=>{const g=c.pct==null?null:grade(c.pct);return `<div class="cls" data-act="view" data-id="score"><div style="flex:1;min-width:0"><b>${esc(s.name)}</b>${bar(c,s.color)}<small>ได้ ${fmt(c.earned)} จาก ${fmt(c.doneFull)} ที่ประเมินแล้ว • เต็ม ${fmt(c.full)}</small></div>${g!=null?`<span class="pill ${gc(g)}">เกรด ${g}</span>`:'<span class="pill open">รอคะแนน</span>'}</div>`}).join('')}`:'<div class="empty">ยังไม่มีคะแนน — เปิดเมนู “คะแนนและผลการเรียน” เพื่อเริ่มบันทึกคะแนนเก็บ กลางภาค ปลายภาค</div>'}</div>`;
+}
+function examRow(x){const s=sub(x.subjectId),n=left(x.date);return `<div class="item"><div class="ic" style="background:${s.color}22;color:${s.color}">📆</div><div class="grow" data-act="edit" data-t="Exams" data-id="${x.id}"><b>${esc(x.kind)} • ${esc(s.name)}</b><small>${esc(fd(x.date))}${x.start?' เวลา '+esc(x.start):''}${x.room?' ห้อง '+esc(x.room):''}${x.topics?'<br>'+esc(x.topics):''}</small></div><span class="pill ${n<0?'done':n<=3?'low':n<=7?'open':'doing'}">${n<0?'สอบแล้ว':n==0?'วันนี้!':'อีก '+n+' วัน'}</span></div>`}
+function examView(){const l=S.Exams.slice().sort((a,b)=>a.date>b.date?1:-1);return `<div class="seg"><button class="btn" data-act="add" data-t="Exams">+ เพิ่มตารางสอบ</button></div><div class="card">${l.length?l.map(examRow).join(''):'<div class="empty">ยังไม่มีตารางสอบ</div>'}</div>`}
+function dashExams(){const l=S.Exams.filter(x=>left(x.date)>=0).sort((a,b)=>a.date>b.date?1:-1).slice(0,3);return `<div class="card" style="margin-top:16px"><h3>📆 สอบที่กำลังจะมาถึง <a data-act="view" data-id="exam">ดูทั้งหมด</a></h3>${l.length?l.map(examRow).join(''):'<div class="empty">ยังไม่มีตารางสอบ — เพิ่มได้ที่เมนู “ตารางสอบ”</div>'}</div>`}
+function dashPack(){const d=dow()%7+1,ids=[...new Set(S.Schedule.filter(x=>x.day==d).map(x=>x.subjectId))];return `<div class="card" style="margin-top:16px"><h3>🎒 เตรียมของไปเรียนพรุ่งนี้ (วัน${DAYS[d]}) <button class="mini" data-act="add" data-t="Packs" aria-label="เพิ่มของที่ต้องเอา">+</button></h3>${ids.length?ids.map(id=>{const s=sub(id),it=S.Packs.filter(p=>p.subjectId==id);return `<div class="cls" style="cursor:default"><i style="background:${s.color};width:12px;height:12px;border-radius:50%;flex:none"></i><div><b>${esc(s.name)}</b><small>${it.length?it.map(p=>`<span data-act="edit" data-t="Packs" data-id="${p.id}" style="cursor:pointer;text-decoration:underline dotted">${esc(p.text)}</span>`).join(' • '):'ยังไม่ได้จดของที่ต้องเอา'}</small></div></div>`}).join(''):'<div class="empty">พรุ่งนี้ไม่มีเรียน</div>'}</div>`}
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+let cm=new Date(new Date().getFullYear(),new Date().getMonth(),1),csel=ymd(new Date());
+function calItems(){const m={},add=(d,t,c,tp,id)=>{if(d)(m[d]=m[d]||[]).push({t,c,tp,id})};
+  S.Homework.filter(h=>stOf(h)!='done').forEach(h=>add(h.due,'📝 '+h.title+' ('+sub(h.subjectId).name+')','#2F6BEB','Homework',h.id));
+  S.Exams.forEach(x=>add(x.date,'📆 '+x.kind+' '+sub(x.subjectId).name,'#E5484D','Exams',x.id));
+  S.Events.forEach(x=>add(x.date,'📌 '+x.title+' ('+x.kind+')','#F5A800','Events',x.id));S.Projects.forEach(x=>add(x.due,'🧩 '+x.title,'#8B5CF6','Projects',x.id));return m}
+function calView(){
+  const y=cm.getFullYear(),mo=cm.getMonth(),ev=calItems(),first=new Date(y,mo,1).getDay()||7,days=new Date(y,mo+1,0).getDate(),td=ymd(new Date());
+  const key=d=>y+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+  let cells='';for(let i=1;i<first;i++)cells+='<div></div>';
+  const ic={Homework:'📝',Exams:'📆',Events:'📌',Projects:'🧩'};
+  for(let d=1;d<=days;d++){const k=key(d),l=ev[k]||[],wk=new Date(y,mo,d).getDay()||7,hol=l.some(e=>e.tp=='Events'&&((S.Events.find(x=>x.id==e.id)||{}).kind=='วันหยุด'));cells+=`<div class="cd ${k==td?'tdy':''} ${k==csel?'sel':''} ${wk>=6?'we':''} ${hol?'hol':''}" data-act="calday" data-id="${k}"><b>${d}</b><div class="chs">${l.slice(0,3).map(e=>`<span class="ch" style="background:${e.c}26;color:${e.c}">${ic[e.tp]||'•'}<em> ${esc(e.t.replace(/^\S+\s/,''))}</em></span>`).join('')}${l.length>3?`<span class="more">+${l.length-3}</span>`:''}</div></div>`}
+  const sel=ev[csel]||[];
+  return `<div class="card"><h3><span>${cm.toLocaleDateString('th-TH',{month:'long',year:'numeric'})}</span><span><button class="mini" data-act="caltoday" aria-label="กลับไปเดือนนี้" style="width:auto;padding:0 10px;font-size:12px">วันนี้</button> <button class="mini" data-act="calprev" aria-label="เดือนก่อน">‹</button> <button class="mini" data-act="calnext" aria-label="เดือนถัดไป">›</button></span></h3>
+  <div class="cal">${['จ','อ','พ','พฤ','ศ','ส','อา'].map((d,i)=>`<div class="dh" style="background:${['#FFE27A','#FFB6D1','#B8E6B8','#FFC48A','#A9D4FF','#D3B8FF','#FF9B9B'][i]}">${d}</div>`).join('')}${cells}</div>
+  <p class="hint">📝 การบ้านที่ค้าง • 📆 สอบ • 📌 กิจกรรมโรงเรียน • 🧩 โครงงาน (กดวันที่เพื่อดูรายละเอียด)</p></div>
+  <div class="card" style="margin-top:14px"><h3>${esc(fd(csel))} <button class="btn" data-act="add" data-t="Events" data-date="${csel}">+ กิจกรรมโรงเรียน</button></h3>${sel.length?sel.map(e=>`<div class="cls" data-act="edit" data-t="${e.tp}" data-id="${e.id}"><i style="background:${e.c};width:12px;height:12px;border-radius:50%;flex:none"></i><b style="font-size:14px">${esc(e.t)}</b></div>`).join(''):'<div class="empty">ไม่มีรายการในวันนี้</div>'}</div>`;
+}
+function dashEvents(){const l=S.Events.filter(x=>left(x.date)>=0).sort((a,b)=>a.date>b.date?1:-1).slice(0,3);return `<div class="card" style="margin-top:16px"><h3>📌 กิจกรรมโรงเรียนที่ใกล้ถึง <a data-act="view" data-id="cal">ปฏิทินรวม</a></h3>${l.length?l.map(x=>`<div class="cls" data-act="edit" data-t="Events" data-id="${x.id}"><div class="pb" style="background:#FFF3D1">📌</div><div><b>${esc(x.title)}</b><small>${esc(x.kind)} • ${esc(fd(x.date))} (${left(x.date)==0?'วันนี้':'อีก '+left(x.date)+' วัน'})</small></div></div>`).join(''):'<div class="empty">ยังไม่มีกิจกรรม — เพิ่มได้ที่เมนู “ปฏิทินรวม”</div>'}</div>`}
+const tm=t=>{const a=String(t).split(':');return +a[0]*60+ +a[1]},per=x=>Math.max(1,Math.round((tm(x.end)-tm(x.start))/50));
+function attCalc(sid){const r=S.Attend.filter(x=>x.subjectId==sid),w=+S.student.weeks||18,np=x=>+x.periods||1,total=S.Schedule.filter(x=>x.subjectId==sid).reduce((a,x)=>a+per(x),0)*w,absent=r.filter(x=>x.status!='สาย').reduce((a,x)=>a+np(x),0),late=r.filter(x=>x.status=='สาย').reduce((a,x)=>a+np(x),0),allow=Math.floor(total*0.2);return {r,total,absent,late,allow,rest:allow-absent,pct:total?Math.max(0,100-absent/total*100):null}}
+function attView(){
+  return `<p class="hint">นับคาบที่ขาด/ลา เทียบเกณฑ์เวลาเรียน 80% ของทั้งเทอม (คาบต่อสัปดาห์ × ${+S.student.weeks||18} สัปดาห์ แก้จำนวนสัปดาห์ได้ที่การ์ดโปรไฟล์) เกณฑ์จริงของโรงเรียนอาจต่างกัน</p><div class="sg">${S.Subjects.map(s=>{const c=attCalc(s.id),st=c.rest<0?['low','เสี่ยงขาดสิทธิ์สอบ']:c.rest<=2?['open','ใกล้เกณฑ์']:['done','ปกติ'];return `<div class="card" style="border-top:6px solid ${s.color}"><h3>${esc(s.name)} <span class="pill ${st[0]}">${st[1]}</span></h3><p class="hint">ขาด/ลา <b>${c.absent}</b> • สาย <b>${c.late}</b> คาบ ${c.total?`• ขาดได้อีก <b>${Math.max(0,c.rest)}</b> จาก ${c.allow} คาบ • เข้าเรียนประมาณ ${fmt(c.pct)}%`:'• ยังไม่มีคาบในตารางเรียน'}</p>${c.r.sort((a,b)=>a.date<b.date?1:-1).slice(0,5).map(x=>`<div class="cls" data-act="edit" data-t="Attend" data-id="${x.id}"><b style="font-size:14px">${esc(x.date)}</b><span class="pill ${x.status=='สาย'?'open':'low'} sc2">${esc(x.status)}${+x.periods>1?' ×'+esc(x.periods):''}</span></div>`).join('')}<div class="acts"><button class="btn gh" data-act="add" data-t="Attend" data-sid="${s.id}">+ บันทึกขาด/ลา/สาย</button></div></div>`}).join('')||'<div class="card empty">เพิ่มวิชาก่อน</div>'}</div>`}
+function weekWatch(){
+  const W=[],d=n=>n==0?'วันนี้':n==1?'พรุ่งนี้':'อีก '+n+' วัน';
+  const late=S.Homework.filter(isLate);if(late.length)W.push(['late',`เลยกำหนดส่ง ${late.length} งาน: ${late.slice(0,3).map(h=>esc(h.title)).join(', ')}`]);
+  S.Homework.filter(h=>stOf(h)!='done'&&h.due&&left(h.due)>=0&&left(h.due)<=2).sort(byDue).forEach(h=>W.push(['soon',`${esc(h.title)} (${esc(sub(h.subjectId).name)}) ส่ง${d(left(h.due))}`]));
+  S.Exams.filter(x=>left(x.date)>=0&&left(x.date)<=7).sort((a,b)=>a.date>b.date?1:-1).forEach(x=>W.push(['exam',`${esc(x.kind)} ${esc(sub(x.subjectId).name)} ${d(left(x.date))}`]));
+  S.Events.filter(x=>left(x.date)>=0&&left(x.date)<=7).forEach(x=>W.push(['soon',`${esc(x.title)} (${esc(x.kind)}) ${d(left(x.date))}`]));
+  S.Projects.forEach(x=>{const i=pjInfo(x);if(i.pct<100&&(i.st[1]=='ล่าช้า'||i.st[1]=='เสี่ยง'))W.push(['late',`โครงงาน ${esc(x.title)} ${i.st[1]} (ทำแล้ว ${i.pct}%)`])});
+  S.Subjects.map(s=>({s,c:attCalc(s.id)})).filter(x=>x.c.total&&x.c.rest<=2).forEach(x=>W.push(['late',`เวลาเรียน ${esc(x.s.name)}: ${x.c.rest<0?'เกินเกณฑ์แล้ว':'ขาดได้อีก '+x.c.rest+' คาบ'}`]));
+  S.Subjects.map(s=>({s,c:calc(s.id)})).filter(x=>x.c.pct!=null&&grade(x.c.pct)<2).forEach(x=>W.push(['soon',`คะแนน ${esc(x.s.name)} ต่ำกว่าเกรด 2 (ตอนนี้ ${fmt(x.c.pct)}%)`]));
+  return W}
+function workload(){
+  const days=[...Array(14)].map((_,i)=>{const dt=new Date();dt.setDate(dt.getDate()+i);const k=ymd(dt);return {k,dt,n:S.Homework.filter(h=>stOf(h)!='done'&&h.due==k).length+S.Exams.filter(x=>x.date==k).length+S.Projects.filter(x=>x.due==k).length}});
+  const mx=Math.max(1,...days.map(x=>x.n));return {days,mx,peak:days.reduce((a,b)=>b.n>a.n?b:a,days[0]),total:days.reduce((a,x)=>a+x.n,0)}}
+function dashAlerts(){
+  const W=weekWatch(),w=workload(),col={late:'#E5484D',soon:'#E48A00',exam:'#2F6BEB'};
+  return `<div class="card" style="margin-top:16px;background:#FFF8E6"><h3>🔔 สัปดาห์นี้ต้องระวังอะไร</h3>${W.length?W.map(([k,t])=>`<div class="item" style="margin:0 0 8px;border-left:5px solid ${col[k]}">${t}</div>`).join(''):'<div class="empty">ไม่มีอะไรน่ากังวล 🎉</div>'}</div>
+  <div class="card" style="margin-top:16px"><h3>📊 ภาระงาน 14 วันข้างหน้า <span class="pill ${w.peak.n>=3?'low':'doing'}">${w.total} รายการ</span></h3><div style="display:flex;gap:4px;align-items:flex-end;height:80px">${w.days.map(x=>`<div style="flex:1;text-align:center;font-size:10px"><div style="height:${x.n?8+x.n/w.mx*56:2}px;background:${x.n>=3?'var(--red)':x.n?'var(--blue)':'#E5EAF5'};border-radius:4px"></div>${x.dt.getDate()}</div>`).join('')}</div><p class="hint">${w.peak.n?`วันที่หนักสุด: ${esc(fd(w.peak.k))} (${w.peak.n} รายการ)${w.peak.n>=3?' — ควรเริ่มทำล่วงหน้า':''}`:'ยังไม่มีงานกำหนดส่งในช่วงนี้'}</p></div>`;
+}
+const GT={Projects:'🧩 โครงงาน / งานกลุ่ม',Activities:'🏅 กิจกรรมพัฒนาผู้เรียน',Links:'🔗 ลิงก์ประจำวิชา',Contacts:'☎️ ครูและผู้ติดต่อ',Study:'📚 แผนอ่านหนังสือสอบ',Mistakes:'🧠 สมุดข้อผิดพลาด',Terms:'🎓 ผลการเรียนสะสม (GPAX)'};
+const lst=(t,rows,fn,empty)=>`<div class="card" style="margin-top:14px"><h3>${GT[t]} <button class="btn" data-act="add" data-t="${t}">+ เพิ่ม</button></h3>${rows.length?rows.map(fn).join(''):`<div class="empty">${empty}</div>`}</div>`;
+const ed=(t,x,html)=>`<div class="cls" data-act="edit" data-t="${t}" data-id="${x.id}">${html}</div>`;
+const stop='onclick="event.stopPropagation()" target="_blank" rel="noopener"';
+const url=u=>/^https?:/.test(u)?u:'https://'+u;
+const link=t=>t.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" '+stop+'>ลิงก์</a>');
+function streak(){const d=new Set(S.doneDays||[]);let n=0,c=new Date();if(!d.has(ymd(c)))c.setDate(c.getDate()-1);while(d.has(ymd(c))){n++;c.setDate(c.getDate()-1)}return n}
+const streakP=()=>streak()>1?`<p>🔥 ส่งงานต่อเนื่อง ${streak()} วัน เก่งมาก!</p>`:'';
+function pjInfo(x){const L=String(x.steps||'').split('\n').filter(s=>s.trim()).map(s=>{const m=s.match(/^(✓\s*)?(.*?)(?:\s*@(\d{4}-\d{2}-\d{2}))?\s*$/);return {done:!!m[1],t:m[2],d:m[3]||''}}),d=L.filter(l=>l.done).length,pct=L.length?Math.round(d/L.length*100):0,n=x.due?left(x.due):null;
+  const lateStep=L.some(l=>!l.done&&l.d&&left(l.d)<0),st=pct==100&&L.length?['done','เสร็จแล้ว']:(n!=null&&n<0)||lateStep?['low','ล่าช้า']:n!=null&&n<=7&&pct<50?['open','เสี่ยง']:['doing','ตามแผน'];return {L,d,pct,n,st}}
+function paView(){
+  const P=S.Projects.slice().sort((a,b)=>(a.due||'9')>(b.due||'9')?1:-1);
+  return lst('Projects',P,x=>{const i=pjInfo(x),s=sub(x.subjectId);
+    return `<div class="item" style="display:block"><div class="grow" data-act="edit" data-t="Projects" data-id="${x.id}"><b>${esc(x.title)} <span class="pill ${i.st[0]}">${i.st[1]} ${i.pct}%</span></b><small>${esc(s.name)}${x.due?' • ส่ง '+esc(fd(x.due))+(i.n>=0?' (อีก '+i.n+' วัน)':' (เลยกำหนด)'):''}${x.members?' • 👥 '+esc(x.members):''}</small></div>${i.L.length?`<div class="bar"><i style="width:${i.pct}%;background:var(--green)"></i></div>`+i.L.map((l,k)=>`<label style="font-weight:500;display:flex;gap:8px;align-items:center"><input type="checkbox" style="width:auto" data-act="step" data-id="${x.id}" data-i="${k}" ${l.done?'checked':''}> <span>${esc(l.t)}${l.d?` <small class="${!l.done&&left(l.d)<0?'late':''}">(${esc(fd(l.d))})</small>`:''}</span></label>`).join(''):'<small>เพิ่มขั้นตอนเพื่อติดตามความคืบหน้า</small>'}</div>`},'ยังไม่มีโครงงาน — แตกเป็นขั้นตอนแล้วติ๊กความคืบหน้าได้')
+  +lst('Activities',S.Activities,x=>ed('Activities',x,`<div style="flex:1;min-width:0"><b>${esc(x.name)}</b><small>${esc(x.kind)}${+x.need?' • '+fmt(+x.done||0)+'/'+fmt(+x.need)+' ชม.':''}</small>${+x.need?`<div class="bar"><i style="width:${Math.min(100,(+x.done||0)/+x.need*100)}%;background:var(--blue)"></i></div>`:''}</div><span class="pill ${x.status=='ผ่านแล้ว'?'done':x.status=='ยังไม่ผ่าน'?'low':'doing'}">${esc(x.status)}</span>`),'ยังไม่มีกิจกรรม (แนะแนว ชุมนุม จิตอาสา ฯลฯ)');
+}
+function studyView(){
+  const flip=(t,x,f,a,b,on)=>`<button class="pill ${x[f]==a?'done':'open'}" data-act="flip" data-t="${t}" data-id="${x.id}" data-f="${f}" data-a="${a}" data-b="${b}">${x[f]==a?'✓ ':''}${x[f]==a?a:b}</button>`;
+  return lst('Study',S.Study.slice().sort((a,b)=>a.date>b.date?1:-1),x=>`<div class="item"><div class="grow" data-act="edit" data-t="Study" data-id="${x.id}"><b>${esc(x.topic)}</b><small>${esc(sub(x.subjectId).name)} • ${esc(x.date)}${x.minutes?' • '+esc(x.minutes)+' นาที':''}</small></div>${flip('Study',x,'done','อ่านแล้ว','ยังไม่อ่าน')}</div>`,'ยังไม่มีแผนอ่าน — แบ่งหัวข้อตามวันก่อนสอบ')
+  +lst('Mistakes',S.Mistakes.slice().sort((a,b)=>a.date<b.date?1:-1),x=>`<div class="item"><div class="grow" data-act="edit" data-t="Mistakes" data-id="${x.id}"><b>${esc(sub(x.subjectId).name)} • ${esc(x.date)}</b><small style="display:block">❌ ${esc(x.question)}</small>${x.reason?`<small style="display:block">สาเหตุ: ${esc(x.reason)}</small>`:''}${x.fix?`<small style="display:block">✅ ${esc(x.fix)}</small>`:''}</div>${flip('Mistakes',x,'reviewed','ทบทวนแล้ว','ยังไม่ทบทวน')}</div>`,'ยังไม่มีข้อผิดพลาด — จดข้อที่ทำผิดไว้ทบทวนก่อนสอบ');
+}
+function refView(){
+  return lst('Contacts',S.Contacts,x=>ed('Contacts',x,`<div style="flex:1;min-width:0"><b>${esc(x.name)}</b><small>${esc(x.role||'')}${x.line?' • LINE: '+esc(x.line):''}</small></div>${x.phone?`<a class="pill doing" href="tel:${esc(x.phone)}" ${stop.replace(' target="_blank" rel="noopener"','')}>📞 ${esc(x.phone)}</a>`:''}${x.email?`<a class="pill open" href="mailto:${esc(x.email)}" ${stop.replace(' target="_blank" rel="noopener"','')}>✉️</a>`:''}`),'ยังไม่มีผู้ติดต่อ (ครูที่ปรึกษา ครูประจำวิชา)')
+  +lst('Links',S.Links,x=>ed('Links',x,`<i style="background:${sub(x.subjectId).color};width:12px;height:12px;border-radius:50%;flex:none"></i><div style="flex:1;min-width:0"><b>${esc(x.title)}</b><small>${esc(sub(x.subjectId).name)}</small></div><a class="pill doing" href="${esc(url(x.url))}" ${stop}>เปิด</a>`),'ยังไม่มีลิงก์ (Google Classroom, ห้อง Meet ของแต่ละวิชา)');
+}
+function termsCard(){
+  const T=S.Terms,cr=T.reduce((a,x)=>a+(+x.credits||0),0),g=T.reduce((a,x)=>a+(+x.gpa||0)*(+x.credits||0),0),C=S.credits||{};
+  const cur=S.Subjects.map(s=>({s,c:calc(s.id)})).filter(x=>x.c.pct!=null),w=x=>cwt(x.s.id),cc=cur.reduce((a,x)=>a+w(x),0),cg=cur.reduce((a,x)=>a+grade(x.c.pct)*w(x),0);
+  return lst('Terms',T,x=>ed('Terms',x,`<b>${esc(x.term)}</b><span class="sc2">GPA ${esc(x.gpa)} • ${esc(x.credits)} หน่วยกิต</span>`),'ยังไม่มีเทอมที่ผ่านมา — เพิ่มเพื่อคำนวณ GPAX')+`<p class="hint">GPAX ที่บันทึกไว้: <b>${cr?fmt(g/cr):'-'}</b>${cc?` • รวมเทอมปัจจุบัน (ประมาณ): <b>${fmt((g+cg)/(cr+cc))}</b>`:''}</p>`;
+}
+const mixc=(h,p,b)=>{const a=h.slice(1),c=b.slice(1),n=(x,i)=>parseInt(x.substr(i,2),16);return '#'+[0,2,4].map(i=>Math.round(n(a,i)*(1-p)+n(c,i)*p).toString(16).padStart(2,'0')).join('')};
+const SC={flat:'#2F6BEB',clay:'#9B7FE0',meadow:'#4FA52E'},TH0={c:'#2F6BEB',mode:'light',size:'m',style:'flat'},CHEER=['วันนี้ทำได้ดีมากเลย','ค่อยๆ ทำทีละงาน เดี๋ยวก็เสร็จ','อย่าลืมพักสายตาด้วยนะ','เก่งขึ้นทุกวันเลย','ทำเท่าที่ไหว ก็เก่งแล้ว'];
+function applyTheme(t){t=t||{};const c=/^#[0-9a-f]{6}$/i.test(t.c)?t.c:TH0.c,dark=t.mode=='dark'||(t.mode=='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches),r=document.documentElement.style;
+  r.setProperty('--blue',c);r.setProperty('--blue2',mixc(c,.4,'#4F46E5'));r.setProperty('--tint',dark?mixc(c,.78,'#18223A'):mixc(c,.88,'#FFFFFF'));
+  document.body.classList.toggle('dark',!!dark);document.body.classList.toggle('clay',t.style=='clay'||t.style=='meadow');document.body.classList.toggle('meadow',t.style=='meadow');document.body.style.fontSize={s:'14px',m:'15px',l:'17px'}[t.size]||'15px'}
+function setTheme(patch){const cur=Object.assign({},TH0,S.theme||{});if(patch.style&&!patch.c&&Object.values(SC).includes(cur.c))patch.c=SC[patch.style];S.theme=Object.assign({},TH0,S.theme||{},patch);applyTheme(S.theme);try{localStorage.setItem('th',JSON.stringify(S.theme))}catch(e){}run('saveTheme',S.theme).catch(()=>0);themeDlg()}
+function themeDlg(){const t=Object.assign({},TH0,S.theme||{}),sw=['#2F6BEB','#9B7FE0','#E0457B','#4FA52E','#F97316','#334155'];
+  const seg=(k,arr)=>arr.map(([v,l])=>`<button class="f ${t[k]==v?'on':''}" data-act="th" data-k="${k}" data-v="${v}">${l}</button>`).join('');
+  $('#dlg').innerHTML=`<h3>🎨 ธีมและการแสดงผล</h3><label>สีหลัก</label><div class="seg">${sw.map(c=>`<button class="sw ${t.c==c?'on':''}" style="background:${c}" data-act="th" data-k="c" data-v="${c}" aria-label="สี ${c}"></button>`).join('')}<input type="color" id="thc" value="${t.c}" style="width:48px;height:40px;padding:2px" aria-label="เลือกสีเอง"></div>
+  <label>สไตล์</label><div class="seg">${seg('style',[['flat','เรียบ'],['clay','🧸 ดินน้ำมัน (Clay)'],['meadow','🌱 ทุ่งหญ้า (Growth)']])}</div>
+  <label>โหมด</label><div class="seg">${seg('mode',[['light','☀️ สว่าง'],['dark','🌙 มืด'],['auto','ตามเครื่อง']])}</div>
+  <label>ขนาดตัวอักษร</label><div class="seg">${seg('size',[['s','เล็ก'],['m','ปกติ'],['l','ใหญ่']])}</div>
+  <div class="acts"><button class="btn gh" data-act="threset">รีเซ็ต</button><button class="btn" data-act="close">เสร็จ</button></div>`;const d=$('#dlg');if(!d.open)d.showModal()}
+function miniCal(){const n=new Date(),y=n.getFullYear(),m=n.getMonth(),f=new Date(y,m,1).getDay(),dm=new Date(y,m+1,0).getDate();let c='';for(let i=0;i<f;i++)c+='<i></i>';for(let d=1;d<=dm;d++)c+=`<i class="${d==n.getDate()?'td':''}">${d}</i>`;return `<div class="clayonly mini-cal"><div class="mch">${n.toLocaleDateString('th-TH',{month:'long',year:'numeric'})}</div><div class="mcg"><b>อา</b><b>จ</b><b>อ</b><b>พ</b><b>พฤ</b><b>ศ</b><b>ส</b>${c}</div></div>`}
+function dash(){
+  const A=S.Homework,cnt=k=>A.filter(h=>stOf(h)==k).length,late=A.filter(isLate).length,pending=A.filter(h=>stOf(h)!='done').length;
+  const urgent=A.filter(h=>stOf(h)!='done').sort(byDue).slice(0,5);
+  const td=S.Schedule.filter(x=>x.day==dow()).sort(byTime);
+  const ex=S.Extra.map(x=>({...x,o:(x.day-dow()+7)%7})).sort((a,b)=>a.o-b.o||(a.start>b.start?1:-1)).slice(0,4);
+  const card=(ic,bg,l,v)=>`<div class="st"><i style="background:${bg}">${ic}</i><div><small>${l}</small><b>${v}</b></div></div>`;
+  return `<div class="hero">${miniCal()}<span class="tag">${esc(S.student.term||'ภาคเรียนปัจจุบัน')}</span><h1>สวัสดี, น้อง${esc(nick())}! 👋</h1>
+  <p>${pending?`วันนี้มีงานค้างที่ต้องเร่งส่ง <u>${pending} งาน</u> ตั้งใจเรียนและเคลียร์การบ้านให้เรียบร้อยนะ สู้ๆ!`:'ไม่มีงานค้างส่งแล้ว เยี่ยมมาก! 🎉'}</p>
+  ${streakP()}<button class="btn w" data-act="view" data-id="hw">ตรวจสอบการบ้านทั้งหมด</button><button class="btn o" data-act="view" data-id="sch">ดูตารางเรียนวันนี้</button></div>
+  <div class="stats">${card('⏳','#FFF3D1','งานที่รอดำเนินการ',cnt('open'))}${card('🔄','#E3EDFF','กำลังทำอยู่',cnt('doing'))}${card('✅','#E1F6EA','ส่งงานแล้วสำเร็จ',cnt('done'))}${card('⚠️','#FDE5E6','เลยกำหนดส่ง',late)}</div>
+  ${pending?'':'<div class="card caught" style="margin-bottom:14px">☁️ <b>เก่งมาก! ไม่มีงานค้างแล้ว</b> พักผ่อนได้เลย ✅</div>'}<div class="card clayonly pinkc" style="margin-bottom:14px">🦄 <b>กำลังใจวันนี้:</b> ${CHEER[new Date().getDate()%CHEER.length]} 🌈</div>
+  <div class="cols"><div class="card"><h3>🔥 งานเร่งด่วน / ใกล้กำหนดส่ง <a data-act="view" data-id="hw">ดูทั้งหมด</a></h3>${urgent.length?urgent.map(hwItem).join(''):'<div class="empty">ยังไม่มีการบ้านค้าง กด “+ เพิ่มการบ้านใหม่” ได้เลย</div>'}</div>
+  <div class="card"><h3>📅 ตารางเรียนวันนี้ <span class="pill done">วัน${DAYS[dow()]}</span></h3>${td.length?td.map(clsRow).join(''):'<div class="empty">วันนี้ไม่มีคาบเรียน</div>'}</div></div>
+  ${dashAlerts()}${dashEvents()}${dashExams()}${dashPack()}${dashScores()}
+  <div class="card" style="margin-top:16px"><h3>⭐ ตารางเรียนพิเศษที่กำลังจะถึง <a data-act="view" data-id="extra">ดูทั้งหมด</a></h3>${ex.length?`<div class="sg">${ex.map(x=>exRow(x,x.o==0?'วันนี้':x.o==1?'พรุ่งนี้':'วัน'+DAYS[x.day])).join('')}</div>`:'<div class="empty">ยังไม่มีเรียนพิเศษ — ไปที่เมนู “ตารางเรียนพิเศษ” เพื่อเพิ่ม</div>'}</div>`;
+}
+function hw(){
+  const isX=h=>String(h.subjectId).startsWith('E:'),st={open:h=>stOf(h)=='open',doing:h=>stOf(h)=='doing',done:h=>stOf(h)=='done'}[filter]||(()=>true);
+  const kind=hk=='school'?h=>!isX(h):hk=='extra'?isX:()=>true,list=S.Homework.filter(h=>st(h)&&kind(h)).sort(byDue);
+  const sec=(t,l)=>l.length?`<div class="card" style="margin-bottom:14px"><h3>${t} <span class="pill doing">${l.length}</span></h3>${l.map(hwItem).join('')}</div>`:'';
+  const chips=(arr,cur,act)=>arr.map(([k,l])=>`<button class="f ${cur==k?'on':''}" data-act="${act}" data-id="${k}">${l}</button>`).join('');
+  return `<div class="seg">${chips([['all','ทั้งหมด'],['school','🏫 โรงเรียน'],['extra','⭐ เรียนพิเศษ']],hk,'hkind')}</div><div class="seg">${chips([['all','ทุกสถานะ'],['open','รอดำเนินการ'],['doing','กำลังทำอยู่'],['done','ส่งแล้ว']],filter,'filter')}</div>
+  ${hk=='all'?sec('🏫 การบ้านโรงเรียน',list.filter(h=>!isX(h)))+sec('⭐ การบ้านเรียนพิเศษ',list.filter(isX)):sec(hk=='school'?'🏫 การบ้านโรงเรียน':'⭐ การบ้านเรียนพิเศษ',list)}${list.length?'':'<div class="card empty">ไม่มีรายการ</div>'}`;
+}
+function sch(){
+  const ds=[1,2,3,4,5].concat(S.Schedule.some(x=>x.day>5)?[6,7]:[]);
+  const imp='';
+  return `${imp}<div class="seg"><button class="btn gh" data-act="itext">📋 นำเข้าตารางเรียนจากข้อความ</button></div><div class="week">${ds.map(d=>{const l=S.Schedule.filter(x=>x.day==d).sort(byTime);return `<div class="card ${d==dow()?'today':''}"><h3>${DAYS[d]} <button class="mini" data-act="add" data-t="Schedule" data-day="${d}" aria-label="เพิ่มคาบวัน${DAYS[d]}">+</button></h3>${l.length?l.map(clsRow).join(''):'<div class="empty">ไม่มีคาบ</div>'}</div>`}).join('')}</div>`;
+}
+function subj(){
+  return `<div class="seg"><button class="btn" data-act="add" data-t="Subjects">+ เพิ่มวิชา</button></div>
+  <div class="sg">${S.Subjects.length?S.Subjects.map(s=>{const o=S.Homework.filter(h=>h.subjectId==s.id&&stOf(h)!='done').length;return `<div class="card sc" style="--c:${s.color}" data-act="edit" data-t="Subjects" data-id="${s.id}"><h3>${esc(s.name)}</h3><p>👩‍🏫 ${esc(s.teacher||'ยังไม่ระบุครู')}</p><p>🚪 ${esc(s.room||'ยังไม่ระบุห้อง')}</p>${s.note?`<p>${esc(s.note)}</p>`:''}<p><span class="pill ${o?'open':'done'}">การบ้านค้าง ${o}</span></p></div>`}).join(''):'<div class="card empty">เริ่มจากเพิ่มวิชาแรกของลูก</div>'}</div>`;
+}
+function updEst(){
+  const on=[...document.querySelectorAll('.pk:checked')].map(x=>x.value);
+  const n=S.Schedule.filter(x=>on.includes(x.subjectId)).length+S.Extra.filter(x=>on.includes('E:'+x.id)).length;
+  const e=$('#est');if(e)e.textContent=Math.round(n*4.3)+30;
+}
+function linePeriod(){
+  const p=S.period||{on:false,off:[]},DEF=['โฮมรูม','ชุมนุม','ประชุมระดับ'];
+  const items=S.Subjects.map(s=>({id:s.id,name:s.name,def:DEF.includes(s.name)})).concat(S.Extra.map(x=>({id:'E:'+x.id,name:'⭐ '+x.name,def:false})));
+  const off=p.init?items.filter(i=>i.def).map(i=>i.id):(p.off||[]);
+  return `<div class="card" style="max-width:560px"><h3>🔔 แจ้งเตือนเมื่อหมดคาบ</h3>
+  <p class="hint">เมื่อหมดคาบ ระบบจะส่ง LINE เตือนให้จดการบ้านของคาบนั้นลงสมุด (ระบบตรวจทุก 5 นาที ข้อความจึงอาจมาช้าได้ราว 5 นาที)</p>
+  <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="p_on" style="width:auto" ${p.on?'checked':''}> เปิดแจ้งเตือนเมื่อหมดคาบ</label>
+  <label>เลือกวิชาที่ต้องการให้เตือน</label>
+  ${items.length?items.map(i=>`<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" class="pk" style="width:auto" value="${esc(i.id)}" ${off.includes(i.id)?'':'checked'}> ${esc(i.name)}</label>`).join(''):'<p class="hint">ยังไม่มีวิชา</p>'}
+  <p class="hint">ประมาณ <b id="est">0</b> ข้อความ/เดือน (รวมสรุปรายวัน) — ข้อความ LINE ฟรีมีจำนวนจำกัดต่อเดือน เลือกเฉพาะวิชาที่มีการบ้านบ่อยจะประหยัดกว่า</p>
+  <div class="acts"><button class="btn" data-act="saveperiod">บันทึก</button></div></div>`;
+}
+function weeklyCard(){return `<div class="card" style="max-width:560px;margin-top:14px"><h3>📅 สรุปประจำสัปดาห์</h3><p class="hint">ส่งสรุปการบ้านที่ค้าง งานที่ต้องส่งใน 7 วัน และสอบใน 14 วัน ทุกวันอาทิตย์ 18:00 น. (ใช้ราว 4 ข้อความต่อเดือน)</p><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="p_wk" style="width:auto" ${S.weekly?'checked':''}> เปิดสรุปประจำสัปดาห์</label><div class="acts"><button class="btn" data-act="saveweekly">บันทึก</button></div></div>`}
+function installCard(){return `<div class="card" style="max-width:560px;margin-top:14px"><h3>📱 เพิ่มเป็นไอคอนบนมือถือ</h3><p class="hint">Android (Chrome): เมนู ⋮ → “ติดตั้งแอป” หรือ “เพิ่มลงในหน้าจอหลัก”<br>iPhone (Safari): ปุ่มแชร์ → “เพิ่มลงหน้าจอโฮม”<br>เปิดจากริชเมนูใน LINE ได้ด้วย (ใส่ลิงก์เว็บแอปเป็นปุ่ม)</p></div>`}
+function botCard(){return `<div class="card" style="max-width:560px;margin-top:14px"><h3>💬 ตอบโต้ผ่านแชท LINE ${S.bot?'<span class="pill done">เปิดอยู่</span>':''}</h3>
+<p class="hint">พิมพ์ในแชทเพื่อจดงานได้เลย บอทตอบกลับทันที ต้องตั้งค่าครั้งเดียว เมื่อเปิดแล้วแอปจะล็อกด้วยลิงก์ที่มีรหัสลับ ซึ่งเปิดได้โดยไม่ต้องล็อกอิน Google (ช่วยแก้ปัญหาเปิดบนมือถือไม่ได้เมื่อล็อกอินหลายบัญชี) ปิดได้ทุกเมื่อ</p>
+<p class="hint">ตัวอย่างคำสั่ง<br>• การบ้าน คณิต ใบงาน 5 ส่ง ศุกร์<br>• คะแนน คณิต กลางภาค 15/20<br>• กิจกรรม กีฬาสี 20/10<br>• ชั่วโมง จิตอาสา 2<br>• สอบ ฟิสิกส์ กลางภาค 20/10 09:00<br>• ส่งแล้ว ใบงาน 5<br>• สรุป (ดูงานค้าง) / ช่วยเหลือ</p>
+<div class="acts">${S.bot?'<button class="btn r" data-act="botOff">ปิด</button><button class="btn" data-act="botShow">ลิงก์และวิธีตั้งค่า</button>':'<button class="btn" data-act="botOn">เปิดใช้งาน</button>'}</div></div>`}
+function botDlg(r){if(!r){toast('ยังไม่ได้เปิดใช้งาน');return}
+$('#dlg').innerHTML=`<h3>ตั้งค่าตอบโต้ผ่านแชท</h3><label>ลิงก์ (ใช้เป็น Webhook URL และใช้เปิดแอป)</label><input readonly value="${esc(r.url)}" onfocus="this.select()">
+<ol class="hint" style="padding-left:18px"><li>Apps Script → ทำให้ใช้งานได้ → จัดการการทำให้ใช้งานได้ → ✏️ → “ผู้มีสิทธิ์เข้าถึง” เลือก <b>ทุกคน</b> → ทำให้ใช้งานได้</li><li>LINE Developers Console → ช่อง Messaging API → Webhook URL วางลิงก์ด้านบน แล้วเปิด Use webhook</li><li>LINE Official Account Manager → ตั้งค่าการตอบกลับ → ปิดข้อความตอบกลับอัตโนมัติ</li><li>เก็บลิงก์นี้เป็นความลับ (เป็นกุญแจเข้าแอปด้วย) แล้วเปิดแอปด้วยลิงก์นี้เท่านั้น</li></ol><div class="acts"><button class="btn" data-act="close">เสร็จ</button></div>`;const d=$('#dlg');if(!d.open)d.showModal()}
+function connCard(){return `<div class="card" style="max-width:560px;margin-top:14px"><h3>🔑 การเชื่อมต่อเครื่องนี้</h3><p class="hint">เชื่อมกับ ${esc(CFG?new URL(CFG.url).pathname.slice(0,28)+'…':'-')} ${CFG&&CFG.email?'เข้าสู่ระบบเป็น <b>'+esc(CFG.email)+'</b> ':''}ข้อมูลการเข้าสู่ระบบเก็บในเครื่องนี้เท่านั้น</p><div class="acts"><button class="btn gh" data-act="cfgOpen">เปลี่ยนลิงก์</button><button class="btn r" data-act="cfgClear">ตัดการเชื่อมต่อ</button></div></div>`}
+function allowCard(){return S.me&&S.me.owner?`<div class="card" style="max-width:560px;margin-top:14px"><h3>👥 ผู้ใช้ที่เข้าได้</h3><p class="hint">อีเมล Google ที่ให้เข้าแอปนี้ได้ (1 อีเมลต่อบรรทัด) เจ้าของเข้าได้เสมอ</p><textarea id="al" rows="4" placeholder="a@gmail.com">${esc((S.allowed||[]).join('\n'))}</textarea><div class="acts"><button class="btn" data-act="allowSave">บันทึก</button></div></div>`:''}
+function line(){return lineConn()+weeklyCard()+botCard()+installCard()+connCard()+allowCard()+'<div style="height:14px"></div>'+linePeriod()}
+function lineConn(){
+  return `<div class="card" style="max-width:560px"><h3>💬 ตั้งค่า LINE แจ้งเตือน</h3><p class="hint">${S.line?'✅ เชื่อมต่อไว้แล้ว — เว้นช่อง token ว่างได้ถ้าไม่ต้องการเปลี่ยน':'ยังไม่ได้เชื่อมต่อ — ใช้ LINE Official Account (Messaging API)'} ดูขั้นตอนที่ <a href="https://developers.line.biz" target="_blank" rel="noopener">developers.line.biz</a></p>
+  <label for="s_tok">Channel access token</label><input id="s_tok" type="password" autocomplete="off">
+  <label for="s_to">User ID หรือ Group ID ผู้รับ (หลายคนคั่นด้วย , ทุกคนต้องเพิ่มบัญชี OA เป็นเพื่อน)</label><input id="s_to" placeholder="U1234…">
+  <label for="s_hr">ส่งสรุปทุกวันเวลา</label><select id="s_hr">${[...Array(24).keys()].map(h=>`<option value="${h}" ${h==S.hour?'selected':''}>${String(h).padStart(2,'0')}:00 น.</option>`).join('')}</select>
+  <div class="acts"><button class="btn gh" data-act="test">ส่งข้อความทดสอบ</button><button class="btn" data-act="saveline">บันทึก</button></div></div>`;
+}
+function render(){
+  $('#today').textContent=new Date().toLocaleDateString('th-TH',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const st=S.student,n=S.Homework.filter(h=>stOf(h)!='done').length;
+  $('#me').innerHTML=`<span class="av">${esc((st.nick||st.name||'ลูก').slice(0,3))}</span><span><b>${esc(st.name||'ตั้งค่าโปรไฟล์ลูก')}</b><small>${esc([st.grade&&'ห้อง '+st.grade,st.no&&'เลขที่ '+st.no].filter(Boolean).join(' ')||'แตะเพื่อกรอกข้อมูล')}</small></span>`;
+  $('#nav').innerHTML=NAV.map(([k,i,l,s])=>`<button class="nv ${view==k?'on':''}" data-act="view" data-id="${k}"><span>${i}</span><span class="l">${l}</span><span class="s">${s}</span>${k=='hw'&&n?`<span class="bd">${n}</span>`:''}</button>`).join('');
+  $('#main').innerHTML={dash,hw,sch,extra,score:scoreView,exam:examView,cal:calView,att:attView,pa:paView,study:studyView,ref:refView,subj,line}[view]();
+  if(view=='line')updEst();
+}
+const F={
+ Subjects:[['name','ชื่อวิชา','text'],['teacher','ครูผู้สอน','text'],['room','ห้องเรียน','text'],['color','สีประจำวิชา','color'],['note','หมายเหตุ','area']],
+ Schedule:[['day','วัน','day'],['start','เริ่ม','time'],['end','จบ','time'],['subjectId','วิชา','subj']],
+ Extra:[['name','วิชา/คอร์สเรียนพิเศษ','text'],['teacher','ครู/สถาบัน','text'],['place','สถานที่ หรือลิงก์ห้องเรียนออนไลน์','text'],['day','วัน','day'],['start','เริ่ม','time'],['end','จบ','time'],['color','สีประจำคอร์ส','color'],['note','หมายเหตุ','area']],
+ Scores:[['subjectId','วิชา','subj'],['name','ชื่อรายการ (เช่น สอบกลางภาค, ใบงานที่ 1)','text'],['kind','ประเภท','kind'],['full','น้ำหนัก = คะแนนที่นับเข้ารวม (เช่น กลางภาค 20)','number'],['max','คะแนนเต็มของข้อสอบ/ใบงาน (เว้นว่าง = เท่ากับน้ำหนัก)','number'],['score','คะแนนที่ได้ (จากคะแนนเต็มข้อสอบ เว้นว่างถ้ายังไม่ประกาศ)','number']],
+ Projects:[['subjectId','วิชา','subj'],['title','ชื่อโครงงาน/งาน','text'],['due','กำหนดส่ง','date'],['members','สมาชิกกลุ่ม','text'],['steps','ขั้นตอน (1 บรรทัดต่อ 1 ขั้น ใส่วันที่ท้ายบรรทัดได้ เช่น ทำการทดลอง @2026-10-20)','area']],
+ Activities:[['name','ชื่อกิจกรรม','text'],['kind','ประเภท','sel:แนะแนว|ชุมนุม|ลูกเสือ-เนตรนารี|จิตอาสา|อื่นๆ'],['done','ชั่วโมงที่ทำแล้ว','number'],['need','ชั่วโมงที่ต้องครบ','number'],['status','สถานะ','sel:กำลังทำ|ผ่านแล้ว|ยังไม่ผ่าน']],
+ Links:[['subjectId','วิชา','subj'],['title','ชื่อลิงก์ (เช่น Classroom, Meet)','text'],['url','ลิงก์ (https://…)','text']],
+ Contacts:[['name','ชื่อ','text'],['role','หน้าที่ (เช่น ครูที่ปรึกษา, ครูคณิต)','text'],['phone','โทรศัพท์','text'],['email','อีเมล','text'],['line','LINE ID','text']],
+ Study:[['subjectId','วิชา','subj'],['date','วันที่อ่าน','date'],['topic','หัวข้อ/บทที่อ่าน','text'],['minutes','เวลา (นาที)','number'],['done','สถานะ','sel:ยังไม่อ่าน|อ่านแล้ว']],
+ Mistakes:[['subjectId','วิชา','subj'],['date','วันที่','date'],['question','ข้อที่ทำผิด','area'],['reason','สาเหตุที่ผิด','text'],['fix','วิธีที่ถูกต้อง','area'],['reviewed','สถานะ','sel:ยังไม่ทบทวน|ทบทวนแล้ว']],
+ Terms:[['term','เทอม/ปีการศึกษา (เช่น 1/2568)','text'],['gpa','เกรดเฉลี่ยเทอมนั้น','number'],['credits','หน่วยกิตรวมเทอมนั้น','number']],
+ Events:[['title','เรื่อง (เช่น กีฬาสี, ประชุมผู้ปกครอง, ค่าเทอม)','text'],['kind','ประเภท','sel:วันหยุด|กิจกรรมโรงเรียน|ประชุมผู้ปกครอง|ค่าเทอม/ค่าใช้จ่าย|เอกสารที่ต้องเซ็น|อื่นๆ'],['date','วันที่','date'],['note','รายละเอียด','area']],
+ Attend:[['subjectId','วิชา','subj'],['date','วันที่','date'],['status','สถานะ','sel:ขาด|ลา|สาย'],['periods','จำนวนคาบที่ขาด/ลา/สาย','number']],
+ Exams:[['subjectId','วิชา','subj'],['kind','ประเภทการสอบ','sel:สอบกลางภาค|สอบปลายภาค|สอบย่อย|ควิซ|อื่นๆ'],['date','วันสอบ','date'],['start','เวลาสอบ','time'],['room','ห้องสอบ','text'],['topics','เนื้อหาที่ออกสอบ','area']],
+ Packs:[['subjectId','วิชา','subj'],['text','ของที่ต้องเอา (เช่น หนังสือ, ชุดพละ, เครื่องคิดเลข)','text']],
+ Homework:[['subjectId','วิชา / คอร์สเรียนพิเศษ','hsubj'],['title','งานที่ได้รับ','text'],['detail','รายละเอียด','area'],['due','กำหนดส่ง','date'],['status','สถานะ','status']]};
+const TITLE={Subjects:'วิชา',Schedule:'คาบเรียน',Homework:'การบ้าน',Extra:'เรียนพิเศษ',Scores:'รายการคะแนน',Exams:'ตารางสอบ',Packs:'ของที่ต้องเอา',Events:'กิจกรรมโรงเรียน',Attend:'เวลาเรียน',Projects:'โครงงาน',Activities:'กิจกรรม',Links:'ลิงก์',Contacts:'ผู้ติดต่อ',Study:'แผนอ่าน',Mistakes:'ข้อผิดพลาด',Terms:'ผลการเรียนเทอม'};
+const REQ={Projects:'title',Activities:'name',Links:'url',Contacts:'name',Study:'topic',Mistakes:'question',Terms:'term'};
+function field([k,l,ty],o){const v=esc(o[k]??'');
+  const inp=ty=='area'?`<textarea id="f_${k}" rows="3">${v}</textarea>`
+   :ty=='day'?`<select id="f_${k}">${[1,2,3,4,5,6,7].map(d=>`<option value="${d}" ${o[k]==d?'selected':''}>${DAYS[d]}</option>`).join('')}</select>`
+   :ty=='subj'?`<select id="f_${k}">${S.Subjects.map(s=>`<option value="${s.id}" ${o[k]==s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select>`
+   :ty=='hsubj'?`<select id="f_${k}"><optgroup label="วิชาเรียนปกติ">${S.Subjects.map(s=>`<option value="${s.id}" ${o[k]==s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</optgroup>${S.Extra.length?`<optgroup label="เรียนพิเศษ">${S.Extra.map(x=>`<option value="E:${x.id}" ${o[k]=='E:'+x.id?'selected':''}>⭐ ${esc(x.name)}</option>`).join('')}</optgroup>`:''}</select>`
+   :ty.startsWith('sel:')?`<select id="f_${k}">${ty.slice(4).split('|').map(x=>`<option ${o[k]==x?'selected':''}>${x}</option>`).join('')}</select>`
+   :ty=='kind'?`<select id="f_${k}">${KINDS.map(x=>`<option ${o[k]==x?'selected':''}>${x}</option>`).join('')}</select>`
+   :ty=='status'?`<select id="f_${k}">${Object.entries(ST).map(([a,b])=>`<option value="${a}" ${(o[k]||'open')==a?'selected':''}>${b}</option>`).join('')}</select>`
+   :`<input id="f_${k}" type="${ty}" ${ty=='number'?'step="0.01" min="0" inputmode="decimal"':''} value="${v}">`;return `<label for="f_${k}">${l}</label>${inp}`}
+function form(t,id,day,sid,dt){
+  if((['Schedule','Scores','Exams','Packs','Attend','Projects','Links','Study','Mistakes'].includes(t)&&!S.Subjects.length)||(t=='Homework'&&!S.Subjects.length&&!S.Extra.length)){toast('เพิ่มวิชาก่อนนะ');view='subj';render();return}
+  const o=id?S[t].find(x=>x.id==id):{color:'#2F6BEB',day:day||dow(),subjectId:sid||S.Subjects[0]?.id||(S.Extra[0]?'E:'+S.Extra[0].id:''),status:'open',kind:'คะแนนเก็บ',periods:'1',date:dt||ymd(new Date())};
+  $('#dlg').innerHTML=`<h3>${id?'แก้ไข':'เพิ่ม'}${TITLE[t]}</h3>${F[t].map(f=>field(f,o)).join('')}<div class="acts">${id?`<button class="btn r" data-act="del" data-t="${t}" data-id="${id}" style="margin-right:auto">ลบ</button>`:''}<button class="btn gh" data-act="close">ยกเลิก</button><button class="btn" data-act="save" data-t="${t}" data-id="${id||''}">บันทึก</button></div>`;
+  $('#dlg').showModal();
+}
+async function saveForm(t,id){
+  const o=id?{...S[t].find(x=>x.id==id)}:{status:'open'};
+  F[t].forEach(([k])=>o[k]=$('#f_'+k).value);
+  if((t=='Subjects'&&!o.name.trim())||(t=='Homework'&&(!o.title.trim()||!o.due))||(t=='Schedule'&&(!o.start||!o.end))||(t=='Extra'&&(!o.name.trim()||!o.start||!o.end))||(t=='Scores'&&(!o.name.trim()||o.full===''))||(t=='Exams'&&!o.date)||(t=='Packs'&&!o.text.trim())||(t=='Events'&&(!o.title.trim()||!o.date))||(t=='Attend'&&!o.date)||(REQ[t]&&!String(o[REQ[t]]||'').trim())){toast('กรอกข้อมูลที่จำเป็นให้ครบ');return}
+  if(t=='Scores'&&o.score!==''&&+o.score>(+o.max||+o.full)){toast('คะแนนที่ได้มากกว่าคะแนนเต็ม');return}
+  try{const r=await run('save',t,o);const i=S[t].findIndex(x=>x.id==r.id);i<0?S[t].push(r):S[t][i]=r;$('#dlg').close();render();toast('บันทึกแล้ว')}catch(e){toast('บันทึกไม่สำเร็จ: '+e.message)}
+}
+function profile(){
+  const s=S.student,fl=[['name','ชื่อ-นามสกุล'],['nick','ชื่อเล่น'],['grade','ชั้น/ห้อง (เช่น ม.4/2)'],['no','เลขที่'],['term','ภาคเรียน (เช่น เทอม 1 / ปีการศึกษา 2569)'],['weeks','จำนวนสัปดาห์เรียนต่อเทอม (เช่น 18)']];
+  $('#dlg').innerHTML=`<h3>ข้อมูลลูก</h3>${fl.map(([k,l])=>`<label for="p_${k}">${l}</label><input id="p_${k}" value="${esc(s[k]||'')}">`).join('')}<div class="acts"><button class="btn gh" data-act="close">ยกเลิก</button><button class="btn" data-act="saveprofile">บันทึก</button></div>`;
+  $('#dlg').showModal();
+}
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,id=b.dataset.id,t=b.dataset.t;
+  if(a=='view'){view=id;render();scrollTo(0,0)}
+  else if(a=='filter'){filter=id;render()}
+  else if(a=='add')form(t,null,b.dataset.day,b.dataset.sid,b.dataset.date)
+  else if(a=='edit')form(t,id)
+  else if(a=='close')$('#dlg').close()
+  else if(a=='save')saveForm(t,id)
+  else if(a=='profile')profile()
+  else if(a=='saveprofile'){const o={};['name','nick','grade','no','term','weeks'].forEach(k=>o[k]=$('#p_'+k).value);try{await run('saveStudent',o);S.student=o;$('#dlg').close();render();toast('บันทึกแล้ว')}catch(e){toast('บันทึกไม่สำเร็จ')}}
+  else if(a=='preset'){toast('กำลังเพิ่ม…');try{for(const [n,f] of [['คะแนนเก็บ',50],['สอบกลางภาค',20],['สอบปลายภาค',30]]){const r=await run('save','Scores',{subjectId:b.dataset.sid,name:n,kind:n,full:String(f),score:''});S.Scores.push(r)}render();toast('เพิ่มแล้ว แก้ตัวเลขให้ตรงกับเกณฑ์ของวิชาได้')}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='saveperiod'){const on=$('#p_on').checked,off=[...document.querySelectorAll('.pk:not(:checked)')].map(x=>x.value);if(on&&!S.line){toast('ตั้งค่าเชื่อมต่อ LINE ด้านบนก่อนนะ');return}try{await run('savePeriodAlert',on,off);S.period={on,off};toast(on?'เปิดแจ้งเตือนเมื่อหมดคาบแล้ว':'ปิดแจ้งเตือนเมื่อหมดคาบแล้ว')}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='saveweekly'){if(!S.line){toast('ตั้งค่าเชื่อมต่อ LINE ด้านบนก่อนนะ');return}const on=$('#p_wk').checked;try{await run('saveWeekly',on);S.weekly=on;toast(on?'เปิดสรุปประจำสัปดาห์แล้ว':'ปิดสรุปประจำสัปดาห์แล้ว')}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='caltoday'){const n=new Date();cm=new Date(n.getFullYear(),n.getMonth(),1);csel=ymd(n);render()}
+  else if(a=='calprev'){cm.setMonth(cm.getMonth()-1);render()}
+  else if(a=='calnext'){cm.setMonth(cm.getMonth()+1);render()}
+  else if(a=='calday'){csel=id;render()}
+  else if(a=='step'){const x=S.Projects.find(p=>p.id==id),L=String(x.steps).split('\n').filter(s=>s.trim()),i=+b.dataset.i;L[i]=L[i].startsWith('✓')?L[i].replace(/^✓\s*/,''):'✓ '+L[i];x.steps=L.join('\n');render();try{await run('save','Projects',x)}catch(e){toast('บันทึกไม่สำเร็จ')}}
+  else if(a=='flip'){const x=S[t].find(o=>o.id==id),f=b.dataset.f;x[f]=x[f]==b.dataset.a?b.dataset.b:b.dataset.a;render();try{await run('save',t,x)}catch(e){toast('บันทึกไม่สำเร็จ')}}
+  else if(a=='botOn'){try{const r=await run('enableBot');S.bot=true;render();botDlg(r)}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='botShow'){try{botDlg(await run('botInfo'))}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='botOff'){if(confirm('ปิดตอบโต้ผ่านแชท? แอปจะกลับมาเปิดด้วยลิงก์ปกติได้')){try{await run('disableBot');S.bot=false;render();toast('ปิดแล้ว')}catch(e){toast('ไม่สำเร็จ: '+e.message)}}}
+  else if(a=='cfgSave'){try{const u=new URL($('#cfgurl').value.trim()),k=u.searchParams.get('k');if(!/\/exec$/.test(u.pathname)||!k)throw 0;CFG={url:u.origin+u.pathname,k};try{localStorage.setItem('sb_cfg',JSON.stringify(CFG))}catch(e){}$('#setup').style.display='none';boot()}catch(e){document.querySelector('#setup .msg').textContent='ลิงก์ไม่ถูกต้อง ต้องลงท้ายด้วย /exec?k=รหัส'}}
+  else if(a=='demoOn'){DEMO=true;try{localStorage.setItem('sb_demo','1')}catch(e){}$('#setup').style.display='none';boot()}
+  else if(a=='demoOff'){try{localStorage.removeItem('sb_demo')}catch(e){}location.reload()}
+  else if(a=='allowSave'){try{S.allowed=await run('saveAllowed',$('#al').value.split(/[\s,]+/).filter(String));toast('บันทึกแล้ว');render()}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='cfgOpen'){$('#dlg').close&&$('#dlg').open&&$('#dlg').close();showSetup()}
+  else if(a=='cfgClear'){if(confirm('ตัดการเชื่อมต่อเครื่องนี้? ข้อมูลใน Google Sheets ไม่หาย')){if(CFG&&CFG.s)await Promise.race([run('logoutGoogle',CFG.s).catch(()=>0),new Promise(r=>setTimeout(r,1500))]);try{localStorage.removeItem('sb_cfg');localStorage.removeItem('sb_snap')}catch(e){}location.reload()}}
+  else if(a=='theme')themeDlg()
+  else if(a=='th')setTheme({[b.dataset.k]:b.dataset.v})
+  else if(a=='threset')setTheme(TH0)
+  else if(a=='del'){const K=t=='Subjects'?id:t=='Extra'?'E:'+id:null,L=t=='Subjects'?[['Schedule','คาบเรียน'],['Scores','รายการคะแนน'],['Exams','ตารางสอบ'],['Packs','ของที่ต้องเอา'],['Attend','เวลาเรียน'],['Projects','โครงงาน'],['Links','ลิงก์'],['Study','แผนอ่าน'],['Mistakes','ข้อผิดพลาด'],['Homework','การบ้าน']]:t=='Extra'?[['Homework','การบ้านเรียนพิเศษ']]:[];
+    const cnt=L.map(([k,n])=>[k,n,S[k].filter(x=>x.subjectId==K).length]).filter(r=>r[2]);
+    if(confirm(cnt.length?'ลบรายการนี้และข้อมูลที่ผูกอยู่ทั้งหมด: '+cnt.map(r=>r[1]+' '+r[2]).join(', ')+' — ยืนยัน?':'ลบรายการนี้?')){await run('remove',t,id);S[t]=S[t].filter(x=>x.id!=id);cnt.forEach(r=>S[r[0]]=S[r[0]].filter(x=>x.subjectId!=K));$('#dlg').close();render();toast('ลบแล้ว')}}
+  else if(a=='hkind'){hk=id;render()}
+  else if(a=='itext'){$('#dlg').innerHTML=`<h3>นำเข้าตารางเรียนจากข้อความ</h3><p class="hint">วาง 1 คาบต่อ 1 บรรทัด รูปแบบ: <b>วัน เวลาเริ่ม-เวลาจบ ชื่อวิชา / ครู</b><br>เช่น จันทร์ 08:20-09:10 คณิตศาสตร์ / ครูนิดา<br>ให้ ChatGPT หรือ Google Lens อ่านตารางจากรูปแล้วแปลงเป็นรูปแบบนี้ก่อนวาง</p><textarea id="it" rows="9"></textarea><div class="acts"><button class="btn gh" data-act="close">ยกเลิก</button><button class="btn" data-act="doitext">นำเข้า</button></div>`;$('#dlg').showModal()}
+  else if(a=='doitext'){const v=$('#it').value;if(!v.trim()){toast('วางข้อความก่อนนะ');return}toast('กำลังนำเข้า…');try{const r=await run('importText',v);S=await run('getAll');$('#dlg').close();render();toast(r)}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='cycle'){const h=S.Homework.find(x=>x.id==id);h.status=NEXT[stOf(h)];if(h.status=='done'){S.doneDays=S.doneDays||[];const t=ymd(new Date());if(!S.doneDays.includes(t)){S.doneDays.push(t);run('logDone',t).catch(()=>0)}}render();try{await run('save','Homework',h);if(h.status=='done')toast('เก่งมาก! ส่งงานแล้ว ✓')}catch(e){toast('บันทึกไม่สำเร็จ')}}
+  else if(a=='saveline'){try{await run('saveLine',$('#s_tok').value,$('#s_to').value,$('#s_hr').value);S.line=true;S.hour=$('#s_hr').value;toast('ตั้งค่าแจ้งเตือนแล้ว');render()}catch(e){toast('ไม่สำเร็จ: '+e.message)}}
+  else if(a=='test'){toast('กำลังส่ง…');try{const r=await run('testLine');toast(r.startsWith('200')?'ส่งแล้ว ดูใน LINE ได้เลย':'ส่งไม่สำเร็จ: '+r.slice(0,70))}catch(e){toast('ยังไม่ได้ตั้งค่า LINE — ไปที่เมนู “ตั้งค่า LINE แจ้งเตือน”')}}
+});
+document.addEventListener('change',e=>{if(e.target.id=='tg'){target=+e.target.value;render()}if(e.target.id=='thc')setTheme({c:e.target.value});if(e.target.classList.contains('pk'))updEst();if(e.target.classList.contains('cr')){S.credits=S.credits||{};S.credits[e.target.dataset.sid]=e.target.value;run('saveCredit',e.target.dataset.sid,e.target.value).catch(()=>toast('บันทึกหน่วยกิตไม่สำเร็จ'))}});
+try{applyTheme(JSON.parse(localStorage.getItem('th')))}catch(e){}
+function showSetup(msg){const el=document.getElementById('setup');el.style.display='flex';el.querySelector('.msg').textContent=msg||'';if(CFG&&CFG.url)document.getElementById('cfgurl').value=CFG.url;initGoogle()}
+function gLogin(cred){
+  const msg=document.querySelector('#setup .msg');let u;
+  try{u=new URL(document.getElementById('cfgurl').value.trim());if(!/\/exec$/.test(u.pathname))throw 0}catch(e){msg.textContent='วางลิงก์เว็บแอป (ลงท้าย /exec) ในช่องด้านบนก่อน แล้วกดเข้าสู่ระบบอีกครั้ง';return}
+  const url=u.origin+u.pathname;msg.textContent='กำลังตรวจสอบ…';
+  fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:'loginGoogle',args:[cred.credential]})}).then(r=>r.json()).then(j=>{
+    if(!j.ok)throw new Error(j.error);CFG={url,s:j.data.sid,email:j.data.email};
+    try{localStorage.setItem('sb_cfg',JSON.stringify(CFG));localStorage.removeItem('sb_demo')}catch(e){}
+    DEMO=false;document.getElementById('setup').style.display='none';boot()}).catch(e=>{msg.textContent=e.message||'เข้าสู่ระบบไม่สำเร็จ'})}
+function initGoogle(n=0){const id=(window.SB_CONFIG||{}).clientId,box=document.getElementById('gbtn');
+  if(!id){box.innerHTML='<p class="hint">ยังไม่ได้ตั้งค่า Google Client ID ในไฟล์ config.js (ใช้ปุ่มรหัสลับได้ตามปกติ)</p>';return}
+  if(window.google&&google.accounts&&google.accounts.id){box.innerHTML='';google.accounts.id.initialize({client_id:id,callback:gLogin});google.accounts.id.renderButton(box,{theme:'outline',size:'large',text:'signin_with',locale:'th',width:300})}
+  else if(n<25)setTimeout(()=>initGoogle(n+1),400);else box.innerHTML='<p class="hint">โหลดปุ่ม Google ไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วรีโหลด</p>'}
+function boot(){
+  if(!CFG&&!DEMO){showSetup();return}
+  if(DEMO)document.getElementById('demobar').style.display='block';
+  run('getAll').then(d=>{S=d;applyTheme(S.theme);render()}).catch(e=>{
+    $('#main').innerHTML='<div class="empty">โหลดข้อมูลไม่สำเร็จ: '+esc(e.message)+'<br><br><button class="btn" data-act="cfgOpen">ตั้งค่าการเชื่อมต่อ</button></div>';
+    if(/รหัสลับ|เซสชัน/.test(e.message))showSetup(e.message)})
+}
+boot();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>0);
+</script>
+</body>
+</html>
